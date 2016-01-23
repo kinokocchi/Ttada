@@ -1,0 +1,11 @@
+# record using myDesktopRecorder
+
+
+# get jpeg with mplayer
+mplayer -ao null <video file name> -vo jpeg:outdir=output
+
+# build gif from jpeg
+convert output/* output.gif
+
+# optimize
+convert output.gif -fuzz 10% -layers Optimize optimised.gif

@@ -1,6 +1,8 @@
 # Ttada
 Testing and Training with Audio Data
 
+<img src="https://github.com/kinokocchi/Ttada/blob/master/doc/task_minpair.png"     width="320" alt="minimial pair task">
+<img src="https://github.com/kinokocchi/Ttada/blob/master/doc/task_play_n_save.png" width="320" alt="simultaneous play and record task">
 
-![wav panel](https://github.com/kinokocchi/schnitt/blob/master/doc/wavpanel_20151127.png)
-[Demo.exe](https://github.com/kinokocchi/Schnitt/blob/master/Schnitt/etc/nsis-installer/Schnitt.exe?raw=true) [5.8MB], Win7 64|32bit tested (no JRE included! -> only runs if Java is installed!)
+![wav panel](doc/task_rec-demo.gif)
+

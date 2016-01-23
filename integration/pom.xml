@@ -1,0 +1,62 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>integration</artifactId>
+	<packaging>pom</packaging>
+	<name>Ttada - Integration Tests</name>
+	<description>Testing multiple packages from Ttada</description>
+
+
+	<parent>
+		<groupId>info.pinlab.ttada</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.1</version>
+	</parent>
+
+
+	<modules>
+		<module>it_diskcache</module>
+		<module>it_session_swing</module>
+	</modules>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>gson</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>diskcache</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>swing</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>session</artifactId>
+				<version>0.1</version>
+			</dependency>
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>core</artifactId>
+				<version>0.1</version>
+			</dependency>
+
+			<dependency>
+				<groupId>info.pinlab.ttada</groupId>
+				<artifactId>core</artifactId>
+				<version>0.1</version>
+				<type>test-jar</type>
+				<scope>test</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+
+</project>

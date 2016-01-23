@@ -1,0 +1,24 @@
+
+
+-- 2015-08-23
+ - recording/playing sound with 2 sources
+ - not stepping while no response
+ 
+
+
+
+-- 2015-08-02
+
+FEAT: double diskcache  
+======================
+  - check if 2 disk cache works now
+  - enable definition of double cache through registry 
+  
+
+
+STYLE: 
+  - 
+  -   
+
+  
+  

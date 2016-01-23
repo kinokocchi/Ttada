@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>info.pinlab.ttada</groupId>
+    <artifactId>integration</artifactId>
+    <version>0.1</version>
+  </parent>
+  <artifactId>it_session_swing</artifactId>
+  <name>Integration - sessions with swing GUI</name>
+  <description>Integration checking application with swing</description>
+  
+    
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.googlecode.mavennatives</groupId>
+				<artifactId>maven-nativedependencies-plugin</artifactId>
+				<version>0.0.7</version>
+				<executions>
+					<execution>
+						<id>unpacknatives</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+  
+  
+  
+  	<dependencies>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>gson</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>diskcache</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>core</artifactId>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>swing</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>session</artifactId>
+			<scope>test</scope>
+		</dependency>
+  	</dependencies>
+  
+</project>

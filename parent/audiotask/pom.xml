@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>info.pinlab.ttada</groupId>
+		<artifactId>parent</artifactId>
+		<version>0.1</version>
+	</parent>
+	<artifactId>audiotask</artifactId>
+	<name>Ttada - AudioTask</name>
+	<description>Audio related models, controls, rules and views</description>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>info.pinlab</groupId>
+			<artifactId>utils</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>info.pinlab.pinsound</groupId>
+			<artifactId>audiocore</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.parent.version}</version>
+			<scope>test</scope>
+			<type>test-jar</type>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>gson</artifactId>
+			<version>${project.parent.version}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>gson</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+
+		<!-- <dependency> <groupId>info.pinlab.pinplayer</groupId> <artifactId>core</artifactId> 
+			<type>test-jar</type> </dependency> -->
+	</dependencies>
+
+</project>

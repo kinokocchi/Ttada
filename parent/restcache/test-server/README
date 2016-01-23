@@ -1,0 +1,26 @@
+
+1. Info
+ - create ECHO server for testing 
+ - to see what 
+ - running on localhost (127.0.0.1:8000)
+ - use com
+
+2. Install django
+ <code>
+ sudo apt-get install python-django
+ </code> 
+ 
+3. Create project
+<code>
+django-admin startproject
+</code>
+
+
+
+5. Run server
+<code>
+python manage.py runserver
+</code>
+
+
+

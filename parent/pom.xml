@@ -20,6 +20,7 @@
 		<module>session</module>
 		<module>swing</module>
 		<module>dbcache</module>
+		<module>entrytask</module>
 	</modules>
 
 

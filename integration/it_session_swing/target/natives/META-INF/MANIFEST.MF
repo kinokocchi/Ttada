@@ -1,6 +1,0 @@
-Manifest-Version: 1.0
-Created-By: 1.6.0_31 (Sun Microsystems Inc.)
-
-Name: libjinput-osx.jnilib
-SHA1-Digest: ahZ/c2+HRokmZfGR4wk3xdluXmU=
-

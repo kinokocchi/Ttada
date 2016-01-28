@@ -38,6 +38,7 @@ public interface SessionController extends SessionUserReqListener{
 	public int size();
 	
 	
+	public boolean login(String id, char [] pwd);
 	
 	
 //	public int getAttemptN();

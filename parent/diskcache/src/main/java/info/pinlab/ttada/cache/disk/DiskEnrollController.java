@@ -1,5 +1,11 @@
 package info.pinlab.ttada.cache.disk;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.pinlab.ttada.core.cache.Cache;
 import info.pinlab.ttada.core.cache.RemoteCache;
 import info.pinlab.ttada.core.control.EnrollManagerReqListener;
@@ -9,10 +15,6 @@ import info.pinlab.ttada.core.model.response.ResponseSet;
 import info.pinlab.ttada.core.model.task.TaskInstance;
 import info.pinlab.ttada.core.view.EnrollView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.log4j.Logger;
 
 
 /**
@@ -41,7 +43,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class DiskEnrollController implements LocalEnrollController{
-	public static Logger logger = Logger.getLogger(DiskEnrollController.class);
+	public static Logger logger = LoggerFactory.getLogger(DiskEnrollController.class);
 	
 	private Cache cache = null;
 	private final ResponseSet responseSet ;
@@ -154,11 +156,9 @@ public class DiskEnrollController implements LocalEnrollController{
 					
 				} catch (InterruptedException e) {
 					logger.info("EnrollWorkerThread was interrupted");
-					
 					if(resp!=null){ //-- put back this response
 						responseSet.undoNext();
 					}
-					
 					break LOOP;
 				}
 			} // :LOOP

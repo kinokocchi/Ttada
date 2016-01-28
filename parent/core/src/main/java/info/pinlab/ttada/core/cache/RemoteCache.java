@@ -8,10 +8,7 @@ import info.pinlab.ttada.core.cache.Cache;
  * @author Gabor Pinter
  *
  */
-public interface RemoteCache extends Cache{
-	public boolean connect();
-	public boolean isConnected();
-	public void disconnect();
+public interface RemoteCache extends Cache, Remote{
 	
 	public void setResourceLink(String url);
 	public String getResourceLink();

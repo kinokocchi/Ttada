@@ -1,18 +1,5 @@
 package info.pinlab.ttada.session;
 
-import info.pinlab.pinsound.WavClip;
-import info.pinlab.ttada.core.model.MultichoiceTask;
-import info.pinlab.ttada.core.model.display.AudioDisplay;
-import info.pinlab.ttada.core.model.display.Display;
-import info.pinlab.ttada.core.model.display.TextDisplay;
-import info.pinlab.ttada.core.model.rule.AudioRule.AudioRuleBuilder;
-import info.pinlab.ttada.core.model.rule.StepRule.StepRuleBuilder;
-import info.pinlab.ttada.core.model.task.InfoTask;
-import info.pinlab.ttada.core.model.task.RecordTask;
-import info.pinlab.ttada.core.model.task.Task;
-import info.pinlab.ttada.core.model.task.TaskSet;
-import info.pinlab.utils.FileStringTools;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -25,7 +12,21 @@ import java.util.TreeMap;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import info.pinlab.pinsound.WavClip;
+import info.pinlab.ttada.core.model.MultichoiceTask;
+import info.pinlab.ttada.core.model.display.AudioDisplay;
+import info.pinlab.ttada.core.model.display.Display;
+import info.pinlab.ttada.core.model.display.TextDisplay;
+import info.pinlab.ttada.core.model.rule.AudioRule.AudioRuleBuilder;
+import info.pinlab.ttada.core.model.rule.StepRule.StepRuleBuilder;
+import info.pinlab.ttada.core.model.task.InfoTask;
+import info.pinlab.ttada.core.model.task.RecordTask;
+import info.pinlab.ttada.core.model.task.Task;
+import info.pinlab.ttada.core.model.task.TaskSet;
+import info.pinlab.utils.FileStringTools;
 
 /**
  * <p>
@@ -60,7 +61,7 @@ TaskSet tset = preser.parse();
  *
  */
 public class TaskSetCsvParser {
-	public static Logger logger = Logger.getLogger(TaskSetCsvParser.class);
+	public static Logger LOG = LoggerFactory.getLogger(TaskSetCsvParser.class);
 	private static Map<String, Class<? extends Task>> labelToClazzMap = new HashMap<String, Class<? extends Task>>(); 
 
 	public static String COMMENT = "#";
@@ -274,7 +275,7 @@ public class TaskSetCsvParser {
 		//-- check if input available
 		if(csvFilePath == null && csvFileIS == null && csvFileAsString == null){
 			String msg = "No input data for CSV TaskSet parsing!";
-			logger.error(msg);
+			LOG.error(msg);
 			throw new IllegalStateException(msg);
 		}
 
@@ -297,7 +298,7 @@ public class TaskSetCsvParser {
 				}
 			}
 			if(resourceDirAbsPath!=null && !resourceDirAbsPath.isDirectory()){
-				logger.error("Resource path is not a directory '" + resourceDirAbsPath.getAbsolutePath() +"'");
+				LOG.error("Resource path is not a directory '" + resourceDirAbsPath.getAbsolutePath() +"'");
 				resourceDirAbsPath = null;
 			}
 		}
@@ -315,7 +316,7 @@ public class TaskSetCsvParser {
 	public void setCsvFileDir(String dir){
 		csvFileDir = new File(dir);
 		if(!csvFileDir.isDirectory()){
-			logger.error("Csv file dir is NOT set to a directory '" + dir + "'");
+			LOG.error("Csv file dir is NOT set to a directory '" + dir + "'");
 		}
 	}
 	
@@ -356,11 +357,11 @@ public class TaskSetCsvParser {
 					csvFileAsString = FileStringTools.getStreamAsString(csvFileIS);
 				} catch (FileNotFoundException e) {
 					csvFileAsString = null;
-					logger.error(e);
+					LOG.error(e.getMessage());
 					e.printStackTrace();
 				} catch (IOException e) {
 					csvFileAsString = null;
-					logger.error(e);
+					LOG.error(e.getMessage());
 					e.printStackTrace();
 				}
 			}else{
@@ -375,11 +376,11 @@ public class TaskSetCsvParser {
 							csvFileAsString = FileStringTools.getFileAsString(csvFilePath);
 						} catch (FileNotFoundException e) {
 							csvFileAsString = null;
-							logger.error(e);
+							LOG.error(e.getMessage());
 							e.printStackTrace();
 						} catch (IOException e) {
 							csvFileAsString = null;
-							logger.error(e);
+							LOG.error(e.getMessage());
 							e.printStackTrace();
 						}
 					}
@@ -404,7 +405,7 @@ public class TaskSetCsvParser {
 				List<Task> tasks = taskBits.build(); //-- build tasks
 				tset.add(tasks);
 			}catch(final IllegalArgumentException exp){
-				logger.error("Line #"+ (currentLine+1) + " " + exp.getMessage());
+				LOG.error("Line #"+ (currentLine+1) + " " + exp.getMessage());
 
 				//-- start listener callback in different thread!
 				if(errMonitor != null){
@@ -438,7 +439,7 @@ public class TaskSetCsvParser {
 		
 		if ("dir".equals(key) && val != null){
 			String dir = val + System.getProperty("file.separator");
-			logger.info("Resource dir was set to '" + dir + "'");
+			LOG.info("Resource dir was set to '" + dir + "'");
 			resourceDir = dir; 
 			return;
 		}
@@ -461,7 +462,7 @@ public class TaskSetCsvParser {
 		}
 		if ("playdelay".equals(key)){
 			if(val==null || val.isEmpty()){
-				logger.error("No value for play delay! ");
+				LOG.error("No value for play delay! ");
 				return;
 			}
 			audioRule.setDelay(FileStringTools.getDur(val));
@@ -469,7 +470,7 @@ public class TaskSetCsvParser {
 		}
 		if ("name".equals(key) || "title".equals(key)){
 			if(val==null || val.isEmpty()){
-				logger.error("No value for block/taskset name! ");
+				LOG.error("No value for block/taskset name! ");
 				return;
 			}
 			this.tset.setBrief(val);
@@ -597,14 +598,14 @@ public class TaskSetCsvParser {
 			}
 			if(wavFilePath.exists()){
 				try {
-					logger.debug("Reading wav file from '" + wavFilePath.getAbsolutePath());
+					LOG.debug("Reading wav file from '" + wavFilePath.getAbsolutePath());
 					WavClip wav = new WavClip(wavFilePath.getAbsolutePath());
 					if(wav!=null){
 						wavs.put(wavPath, wav);
 						continue READ_WAV;
 					}
 				} catch (IOException e) {
-					logger.error("Error while reading wav file from '" + wavFilePath.getAbsolutePath());
+					LOG.error("Error while reading wav file from '" + wavFilePath.getAbsolutePath());
 					e.printStackTrace();
 				}
 			}else{
@@ -620,14 +621,14 @@ public class TaskSetCsvParser {
 				wavFilePath = new File(csvFileDir, wavPath);
 				if(wavFilePath.exists()){
 					try {
-						logger.debug("Reading wav file from '" + wavFilePath.getAbsolutePath());
+						LOG.debug("Reading wav file from '" + wavFilePath.getAbsolutePath());
 						WavClip wav = new WavClip(wavFilePath.getAbsolutePath());
 						if(wav!=null){
 							wavs.put(wavPath, wav);
 							continue READ_WAV;
 						}
 					} catch (IOException e) {
-						logger.error("Error while reading wav file from '" + wavFilePath.getAbsolutePath());
+						LOG.error("Error while reading wav file from '" + wavFilePath.getAbsolutePath());
 						e.printStackTrace();
 					}
 				}else{

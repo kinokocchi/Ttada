@@ -9,4 +9,13 @@
   <artifactId>LoginTask</artifactId>
   <name>Ttada - Login</name>
   <description>Application login</description>
+  
+  
+    <dependencies>
+  		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>core</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+  </dependencies>
 </project>

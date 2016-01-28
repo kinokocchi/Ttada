@@ -12,7 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -43,7 +44,7 @@ public static void main(String[] args) throws Exception{
  *
  */
 public class CLI{
-	public static Logger logger = Logger.getLogger(CLI.class);
+	public static Logger LOG = LoggerFactory.getLogger(CLI.class);
 	/* hold all configuration here after #init */
 	private final Registry runtimeConf = Registry.getEmptyInstance();
 //	static SessionControllerWithAudio session = null;
@@ -152,7 +153,7 @@ public class CLI{
 	 * @param args
 	 */
 	private void parseArgs(String args[]){
-		logger.info("Parsing runtime arguments");
+		LOG.info("Parsing runtime arguments");
 		FOREACH_ARG: for(int i=0; i<args.length ; ){
 			String arg = args[i];
 //			System.out.println(i + " " + arg);
@@ -191,12 +192,12 @@ public class CLI{
 				arg = arg.substring(0,ix);
 				for(Key key: Key.values()){
 					if(key.getKeyName().equals(arg)){
-						logger.info("Runtime arg '"+  key +  "' = '" + val +"'");
+						LOG.info("Runtime arg '"+  key +  "' = '" + val +"'");
 						runtimeConf.put(key, val);
 						i++; continue FOREACH_ARG;
 					}
 				}
-				logger.error("No such key as '" + arg +"'");
+				LOG.error("No such key as '" + arg +"'");
 			}
 			throw new IllegalArgumentException("No such key as '" + arg + "'");
 		}//-- foreach arg

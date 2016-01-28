@@ -1,7 +1,13 @@
 package info.pinlab.ttada.view.swing.audio;
 
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
-import info.pinlab.ttada.view.swing.audio.AudioRecorderBar;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import info.pinlab.pinsound.PlayerDeviceController;
 import info.pinlab.pinsound.RecorderDeviceController;
 import info.pinlab.pinsound.WavClip;
@@ -9,15 +15,7 @@ import info.pinlab.pinsound.app.AudioPlayer;
 import info.pinlab.pinsound.app.AudioRecorder;
 import info.pinlab.snd.oal.OpenAlPlayer;
 import info.pinlab.snd.oal.OpenAlRecorder;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.BasicConfigurator;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import info.pinlab.ttada.view.swing.PlayerTopPanel;
 
 public class AudioRecorderBarTest {
 	
@@ -40,7 +38,6 @@ public class AudioRecorderBarTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BasicConfigurator.configure();
 		PlayerTopPanel.setNimbusLF();
 		if(IS_LWJGL_WORKING){
 			IF_LWJGL_IS_WORKING();

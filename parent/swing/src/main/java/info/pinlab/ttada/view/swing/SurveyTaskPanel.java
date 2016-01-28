@@ -63,7 +63,7 @@ public class SurveyTaskPanel extends AbstractTaskPanel {
 								if(topView!=null){
 									topView.showWarning("Input error!", msg);
 								}
-								logger.warn(msg);
+								LOG.warn(msg);
 								return;
 							}
 						}
@@ -104,9 +104,9 @@ public class SurveyTaskPanel extends AbstractTaskPanel {
 				Font customFont = ((FontProvider)disp).getFont();
 				String fontName = ((FontProvider)disp).getFontName();
 				if(customFont == null){
-					logger.error("Can't set font '" + fontName  + "'");
+					LOG.error("Can't set font '" + fontName  + "'");
 				}else{
-					logger.debug("Setting font '" + fontName  + "'");
+					LOG.debug("Setting font '" + fontName  + "'");
 					customFont = customFont.deriveFont(((FontProvider)disp).getFontSize());
 					label.setFont(customFont);
 				}

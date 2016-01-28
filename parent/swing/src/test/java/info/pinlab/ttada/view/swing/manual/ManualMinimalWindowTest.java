@@ -4,8 +4,6 @@ import info.pinlab.ttada.core.model.task.InfoTask;
 import info.pinlab.ttada.core.model.task.Task;
 import info.pinlab.ttada.view.swing.PlayerTopPanel;
 
-import org.apache.log4j.BasicConfigurator;
-
 
 /**
  * Simplest GUI window example. Does nothing. No callbacks. It has to be stopped manually.
@@ -16,8 +14,6 @@ import org.apache.log4j.BasicConfigurator;
 public class ManualMinimalWindowTest {
 
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
-		
 		PlayerTopPanel panel = new PlayerTopPanel();
 		panel.setLabel("Minimal test");
 		

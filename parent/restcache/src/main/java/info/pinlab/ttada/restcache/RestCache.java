@@ -4,6 +4,8 @@ package info.pinlab.ttada.restcache;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.nio.channels.IllegalSelectorException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +32,8 @@ import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import info.pinlab.ttada.core.cache.CacheLevel;
 import info.pinlab.ttada.core.cache.Pointer;
@@ -40,7 +43,7 @@ import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
 
 
 public class RestCache implements RemoteCache {
-	public static Logger logger = Logger.getLogger(RestCache.class);
+	public static Logger logger = LoggerFactory.getLogger(RestCache.class);
 	private final String scheme, host, restRoot;
 	private final int port;
 	private final String loginPath, loginId, loginPwd, pingPath, appPingPath; 
@@ -289,16 +292,9 @@ public class RestCache implements RemoteCache {
 		
 		
 		try {
-			final boolean loginstat = login();
-			return loginstat;
+			final Exception loginstat = loginApp();
+			return loginstat==null;
 		} catch (IllegalStateException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return false;
@@ -306,14 +302,14 @@ public class RestCache implements RemoteCache {
 	
 	
 	
-	
-	synchronized private boolean login() throws IllegalStateException, ClientProtocolException, IOException{
+	@Override
+	synchronized public Exception loginApp(){
 		if(this.loginId == null){
 			logger.error("login id is missing!");
-			return false;
+			return new IllegalSelectorException();
 		}else if (this.loginPwd ==  null){
 			logger.error("login pwd is missing!");
-			return false;
+			return new IllegalSelectorException();
 		}else{
 			HttpPost httpPost = null; 
 			HttpResponse httpResp = null;
@@ -324,7 +320,8 @@ public class RestCache implements RemoteCache {
 			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 			nameValuePairs.add(new BasicNameValuePair("login-id", this.loginId));
 			nameValuePairs.add(new BasicNameValuePair("login-pwd", this.loginPwd));
-			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+			httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, Charset.forName("UTF-8")));
+
 			
 			try{
 				httpResp = httpClient.execute(httpPost, httpContext);
@@ -350,10 +347,10 @@ public class RestCache implements RemoteCache {
 				
 			}catch (ClientProtocolException e) {
 				csrf_val = null;
-				throw new ClientProtocolException("ClientProtocolException: Couldn't connect to server '"+ host +"' to login. "+  e.getMessage());
+				return new ClientProtocolException("ClientProtocolException: Couldn't connect to server '"+ host +"' to login. "+  e.getMessage());
 			}catch (IOException e) {
 				csrf_val = null;
-				throw new  IOException("IOException: Couldn't connect to server '"+ host +"' to login. " +  e.getMessage());
+				return new  IOException("IOException: Couldn't connect to server '"+ host +"' to login. " +  e.getMessage());
 			}catch (IllegalStateException e){
 				csrf_val = null;
 				throw new IllegalStateException("IllegalStateException: Couldn't connect to server '"+ host +"' to login. " +  e.getMessage());
@@ -376,16 +373,15 @@ public class RestCache implements RemoteCache {
 						if(CSRF_TOKEN.equals(token)){
 							csrf_val = keyval.substring(eqIx+1);
 							logger.debug("CSRF value was set to '"+ csrf_val +"'");
-							return true;
+							return null;
 						}
 					}
 				}
 			}
-			return true;
+			return null;
 		}
 	}
 
-	
 	
 	
 
@@ -477,6 +473,12 @@ public class RestCache implements RemoteCache {
 	@Override
 	public String getRemoteUri() {
 		return this.host;
+	}
+
+	@Override
+	public Exception loginUsr() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

@@ -5,13 +5,10 @@ import info.pinlab.ttada.core.model.task.Task;
 import info.pinlab.ttada.core.view.PlayerTopView;
 import info.pinlab.ttada.view.swing.PlayerTopPanel;
 
-import org.apache.log4j.BasicConfigurator;
-
 public class ManualMultichoiceTaskPanelTest {
 
 	
 	public static void main(String [] args) throws Exception{
-		BasicConfigurator.configure();
 		PlayerTopPanel.setNimbusLF();
 		
 		Task task = new MultichoiceTask().addChoice("A").addChoice("B").addChoice("C");

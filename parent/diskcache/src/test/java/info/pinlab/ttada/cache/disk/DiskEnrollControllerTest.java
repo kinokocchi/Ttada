@@ -1,16 +1,16 @@
 package info.pinlab.ttada.cache.disk;
 
-import static org.junit.Assert.*;
-import info.pinlab.ttada.core.model.response.Response;
-import info.pinlab.ttada.core.model.response.ResponseContentText;
-import info.pinlab.ttada.core.model.response.ResponseHeader.ResponseHeaderBuilder;
+import static org.junit.Assert.assertTrue;
 
-import org.apache.log4j.BasicConfigurator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import info.pinlab.ttada.core.model.response.Response;
+import info.pinlab.ttada.core.model.response.ResponseContentText;
+import info.pinlab.ttada.core.model.response.ResponseHeader.ResponseHeaderBuilder;
 
 public class DiskEnrollControllerTest {
 
@@ -18,7 +18,6 @@ public class DiskEnrollControllerTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BasicConfigurator.configure();
 		folder = new TestFolderManager(); 
 
 	}

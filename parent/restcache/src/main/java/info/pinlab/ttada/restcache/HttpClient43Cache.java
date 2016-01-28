@@ -1,22 +1,10 @@
 package info.pinlab.ttada.restcache;
 
-import info.pinlab.ttada.core.cache.CacheLevel;
-import info.pinlab.ttada.core.cache.Pointer;
-import info.pinlab.ttada.core.cache.RemoteCache;
-import info.pinlab.ttada.core.cache.RemoteCacheBuilder;
-import info.pinlab.ttada.core.model.response.Response;
-import info.pinlab.ttada.core.model.response.ResponseContent;
-import info.pinlab.ttada.core.model.response.ResponseContentText;
-import info.pinlab.ttada.core.model.response.ResponseHeader;
-import info.pinlab.ttada.core.model.response.ResponseHeader.ResponseHeaderBuilder;
-import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
-import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
-import info.pinlab.utils.FileStringTools;
-
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +33,21 @@ import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import info.pinlab.ttada.core.cache.CacheLevel;
+import info.pinlab.ttada.core.cache.Pointer;
+import info.pinlab.ttada.core.cache.RemoteCache;
+import info.pinlab.ttada.core.cache.RemoteCacheBuilder;
+import info.pinlab.ttada.core.model.response.Response;
+import info.pinlab.ttada.core.model.response.ResponseContent;
+import info.pinlab.ttada.core.model.response.ResponseContentText;
+import info.pinlab.ttada.core.model.response.ResponseHeader;
+import info.pinlab.ttada.core.model.response.ResponseHeader.ResponseHeaderBuilder;
+import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
+import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
+import info.pinlab.utils.FileStringTools;
 
 /**
  * 
@@ -57,7 +58,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class HttpClient43Cache implements RemoteCache, CacheLevel{
-	public static Logger logger = Logger.getLogger(RemoteCache.class);
+	public static Logger LOG = LoggerFactory.getLogger(RemoteCache.class);
 
 	private final String scheme, host, restRoot;
 	private final int port;
@@ -291,6 +292,16 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 	private final URI loginUri ;
 
 
+	
+	static private void closeResponse(CloseableHttpResponse resp){
+		if(resp==null)
+			return;
+		try {
+			resp.close();
+		} catch (IOException ignore) {		}
+	};
+	
+	
 	/**
 	 * Logs in to remote server and gets csrf token.
 	 * 
@@ -299,30 +310,26 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 	 * @throws ClientProtocolException
 	 * @throws IOException
 	 */
-	synchronized private boolean login() throws IllegalStateException, ClientProtocolException, IOException{
-//		HttpHead headReq = new HttpHead(loginUri);
+	@Override
+	synchronized public Exception loginApp(){
 		HttpPost httpPost = new HttpPost(loginUri);
-//		httpPost.addHeader("login-id", this.loginId);
-//		httpPost.addHeader("login-pwd", this.loginPwd);
-
+		
 //		httpPost.setHeader("Content-Type", "application/x-www-form-urlencoded");
 		
 		List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 		nameValuePairs.add(new BasicNameValuePair("login-id", this.loginId));
 		nameValuePairs.add(new BasicNameValuePair("login-pwd", this.loginPwd));
-		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
-
+		httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, Charset.forName("UTF-8")));
 		
 		CloseableHttpResponse loginResp = null;
 		try{
-			logger.info("Attempting to login to '"+ loginUri +"'");
-			
-		    loginResp = loginClient.execute(httpPost, httpContext); 
-		
+			LOG.info("Attempting to login to '"+ httpPost.getRequestLine().getUri() +"'");
+		    loginResp = loginClient.execute(httpPost, httpContext);
 			final int statusCode = loginResp.getStatusLine().getStatusCode();
+			LOG.info("status: " + statusCode );			
 			
 			if((statusCode != 200)){
-				logger.error("Http Error code '" + statusCode  + "'");
+				LOG.error("Http Error code '" + statusCode  + "'");
 				HttpEntity entity = loginResp.getEntity();
 				String errMsg = "";
 				if (entity != null) {
@@ -338,15 +345,17 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 				}
 			}
 		}catch (SocketTimeoutException e){
-			logger.error("Socket timed out to '" + loginUri.toString());
-			throw new IllegalStateException("Couldn't connect login to server '"+ host +"'." + "Err : '" + "Socket Timed out!"  +"'");
+			LOG.error("Socket timed out to '" + loginUri.toString());
+			closeResponse(loginResp);
+			return new IllegalStateException("Couldn't connect login to server '"+ host +"'." + "Err : '" + "Socket Timed out!"  +"'");
 		}catch (ConnectTimeoutException e){
-			logger.error("Connection timed out to '" + loginUri.toString());
-			throw new IllegalStateException("Couldn't connect login to server '"+ host +"'." + "Err : '" + "Connection Timed out!"  +"'");
-		}finally{
-			if(loginResp!=null){
-				loginResp.close();
-			}
+			LOG.error("Connection timed out to '" + loginUri.toString());
+			closeResponse(loginResp);
+			return new IllegalStateException("Couldn't connect login to server '"+ host +"'." + "Err : '" + "Connection Timed out!"  +"'");
+		}catch (IOException e){
+			LOG.error("IOException : " + e.getMessage());			
+			closeResponse(loginResp);
+			return e;
 		}
 		
 		Header[] hdrs = loginResp.getHeaders("Set-Cookie");
@@ -361,7 +370,7 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 					System.out.println("-->HEADER '" + val + "' :: '" + token +"'");
 					if(CSRF_TOKEN.equals(token)){
 						csrf_val = keyval.substring(eqIx+1);
-						logger.debug("CSRF value was set to '"+ csrf_val +"'");
+						LOG.debug("CSRF value was set to '"+ csrf_val +"'");
 					}
 				}
 			}
@@ -387,9 +396,18 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 				.setDefaultHeaders(defaultHeaders)
 				.build()
 				;
-		return true;
+		return null;
 	}
 
+	
+	
+	@Override
+	synchronized public Exception loginUsr(){
+		//TODO: implement user ID!
+		return null;
+	}
+	
+	
 	
 	
 	public String getLoginUri(){
@@ -414,10 +432,10 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 //		httpContext = new BasicHttpContext();
 //		httpContext.setAttribute(id, httpContext);
 		try {
-			logger.debug("Inserting DB data '"+ uri +"'");
+			LOG.debug("Inserting DB data '"+ uri +"'");
 			httpResp = dataClient.execute(httpPut, httpContext);
 			String returnVal = EntityUtils.toString(httpResp.getEntity());
-			logger.debug("PUT response return value '"+ returnVal +"'");
+			LOG.debug("PUT response return value '"+ returnVal +"'");
 			returnPtr = new Pointer(returnVal);
 		} catch (ClientProtocolException e) {
 //			e.printStackTrace();
@@ -432,7 +450,7 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 //			httpPut.reset();
 		}
 		if(httpResp.getStatusLine().getStatusCode()!=200){
-			logger.error("Failed to insert to DB '"+ uri +"'");
+			LOG.error("Failed to insert to DB '"+ uri +"'");
 			return null;
 		}
 		return returnPtr;
@@ -462,16 +480,9 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 		}
 		
 		try {
-			final boolean loginstat = login();
-			return loginstat;
-		} catch (IllegalStateException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (ClientProtocolException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			// TODO Auto-generated catch block
+			final Exception loginstat = loginApp();
+			return loginstat==null;
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 		return false;
@@ -521,14 +532,14 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 		try {
 			httpResp = loginClient.execute(httpGet);
 			if(httpResp != null && 200 == httpResp.getStatusLine().getStatusCode()){
-				logger.info("Normal ping is working fine! Server is not down!");
+				LOG.info("Normal ping is working fine! Server is not down!");
 			}
 		} catch (ClientProtocolException e) {
-			logger.error("The app couldn't ping server! " +  this.host  +" (ClientProtocolException) " + e.getMessage());
+			LOG.error("The app couldn't ping server! " +  this.host  +" (ClientProtocolException) " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		} catch (IOException e) {
-			logger.error("The app couldn't ping server! " +  this.host + " (IOException) " + e.getMessage());
+			LOG.error("The app couldn't ping server! " +  this.host + " (IOException) " + e.getMessage());
 			e.printStackTrace();
 			return false;
 		}finally{
@@ -572,7 +583,6 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 	
 	
 	public static void main(String [] args) throws Exception{
-		BasicConfigurator.configure();
 		
 		SimpleJsonSerializer gson = new SimpleGsonSerializerFactory().build();
 		
@@ -584,7 +594,7 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 				.setLoginPwd("wrong pwd")
 				
 				.setRestRoot("django/rest/")
-//				.setLoginPwd("wrong pwd")
+				.setLoginPwd("wrong pwd")
 
 				.setSerializer(gson)
 
@@ -594,7 +604,7 @@ public class HttpClient43Cache implements RemoteCache, CacheLevel{
 				.setPort(8000)
 				.build();
 		
-		if(client.login()){
+		if(client.loginApp()==null){
 			System.out.println("Login OK!");
 		}else{
 			System.out.println("Login ERROR!");

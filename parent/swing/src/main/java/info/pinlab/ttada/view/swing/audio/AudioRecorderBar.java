@@ -23,11 +23,13 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @SuppressWarnings("serial")
 public class AudioRecorderBar extends JPanel implements AudioRecorderView, AudioPlayerView{
-	public static Logger logger = Logger.getLogger(AudioRecorderBar.class);
+	public static Logger LOG = LoggerFactory.getLogger(AudioRecorderBar.class);
 	
 	private final Icon recIcon;
 	private final Icon playIcon;
@@ -116,7 +118,7 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 					recBtn.setIcon(recIcon);
 				}
 				if(AudioRecorderBar.this.recListener == null){
-					logger.warn("REC request - but no device!");
+					LOG.warn("REC request - but no device!");
 				}else{
 					if(reqRecStop){
 						recListener.reqRecStop();
@@ -136,7 +138,7 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 					playBtn.setIcon(playIcon);
 				}
 				if(AudioRecorderBar.this.playerListener == null){
-					logger.error("Play request - but no device!");
+					LOG.error("Play request - but no device!");
 				}else{
 					playerListener.reqPauseToggle();
 				}

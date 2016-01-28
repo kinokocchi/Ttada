@@ -12,8 +12,6 @@ import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
 import info.pinlab.ttada.session.SessionImpl;
 import info.pinlab.ttada.view.swing.PlayerTopPanel;
 
-import org.apache.log4j.BasicConfigurator;
-
 
 public class ManualEnrollViewPanelModalWindowTest {
 
@@ -30,8 +28,6 @@ public class ManualEnrollViewPanelModalWindowTest {
 
 
 	public static void main(String [] args ){
-		BasicConfigurator.configure();
-
 		SessionController session = new SessionImpl();
 		session.setTaskSet(getDummyTasks());
 

@@ -11,10 +11,12 @@ import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class ResourceLoader{
-	public static Logger logger = Logger.getLogger(ResourceLoader.class);
+	public static Logger LOG = LoggerFactory.getLogger(ResourceLoader.class);
 	public enum IconType {PLAY, STOP, PAUSE, REC};
 	
 	private static final Map<IconType, String> iconMap = new HashMap<ResourceLoader.IconType, String>();
@@ -42,16 +44,16 @@ public class ResourceLoader{
 					is = ResourceLoader.class.getClassLoader().getResourceAsStream(iconFileName);
 				}
 				if (is==null){
-					logger.error("Can't load ICON  '"+ iconFileName + "'");
+					LOG.error("Can't load ICON  '"+ iconFileName + "'");
 					return null;
 				}
-				logger.debug("Loading ICON  '"+ iconFileName + "'");
+				LOG.debug("Loading ICON  '"+ iconFileName + "'");
 				assert(is!=null);
 				icon = new ImageIcon(ImageIO.read(is));
 				cache.put(iconFileName, icon);
 			} catch (IOException ignore) {
 				ignore.printStackTrace();
-				logger.error("Can't load ICON  '"+ iconFileName + "'");
+				LOG.error("Can't load ICON  '"+ iconFileName + "'");
 				return null;
 			}
 		}
@@ -71,10 +73,10 @@ public class ResourceLoader{
 		InputStream is = ResourceLoader.class.getResourceAsStream(font);
 //		InputStream is = ResourceLoader.class.getClassLoader().getResourceAsStream(iconFileName);
 		if(is==null){
-			logger.error("Couldn't load font '" + font + "'");
+			LOG.error("Couldn't load font '" + font + "'");
 			return null;
 		}else{
-			logger.debug("Load font '" + font + "'");
+			LOG.debug("Load font '" + font + "'");
 			try {
 				Font dynFont = Font.createFont(Font.TRUETYPE_FONT,is);
 				return dynFont.deriveFont(size);

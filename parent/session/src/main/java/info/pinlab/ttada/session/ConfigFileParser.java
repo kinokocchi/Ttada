@@ -1,6 +1,18 @@
 package info.pinlab.ttada.session;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.pinlab.ttada.core.model.MultichoiceTask;
 import info.pinlab.ttada.core.model.display.TextDisplay;
 import info.pinlab.ttada.core.model.rule.AudioRule.AudioRuleBuilder;
@@ -11,19 +23,9 @@ import info.pinlab.ttada.core.model.task.Task;
 import info.pinlab.ttada.core.model.task.TaskSet;
 import info.pinlab.utils.FileStringTools;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
 
 public class ConfigFileParser {
-	static Logger logger = Logger.getLogger(ConfigFileParser.class);
+	static Logger LOG = LoggerFactory.getLogger(ConfigFileParser.class);
 
 	private static Map<String, Class<? extends Task>> labelToClazzMap = new HashMap<String, Class<? extends Task>>(); 
 
@@ -189,9 +191,9 @@ public class ConfigFileParser {
 
 
 	private void reportErr(String msg){
-		logger.error("[" + currentLine +"]  "+ msg);
+		LOG.error("[" + currentLine +"]  "+ msg);
 		if(isHaltOnError){
-			logger.error("Exiting on error!");
+			LOG.error("Exiting on error!");
 			System.exit(0);
 		}
 	}

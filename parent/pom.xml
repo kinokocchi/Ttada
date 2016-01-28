@@ -21,7 +21,7 @@
 		<module>swing</module>
 		<module>dbcache</module>
 		<module>entrytask</module>
-		<module>LoginTask</module>
+		<module>logintask</module>
 	</modules>
 
 
@@ -103,12 +103,12 @@
 			<dependency>
 				<groupId>info.pinlab.pinsound</groupId>
 				<artifactId>audiocore</artifactId>
-				<version>0.0.3</version>
+				<version>0.0.4</version>
 			</dependency>
 			<dependency>
 				<groupId>info.pinlab.pinsound</groupId>
 				<artifactId>openal</artifactId>
-				<version>0.0.3</version>
+				<version>0.0.4</version>
 			</dependency>
 
 			<!-- my libraries -->

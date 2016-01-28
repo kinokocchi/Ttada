@@ -23,11 +23,13 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 @SuppressWarnings("serial")
 public class MultichoiceTaskPanel extends AbstractTaskPanel implements ActionListener{
-	public static Logger logger = Logger.getLogger(MultichoiceTaskPanel.class);
+	public static Logger LOG = LoggerFactory.getLogger(MultichoiceTaskPanel.class);
 	
 	private final List<RespButton> buttons ;
 	private static final Color btnGray;
@@ -73,7 +75,7 @@ public class MultichoiceTaskPanel extends AbstractTaskPanel implements ActionLis
 		if(disp instanceof FontProvider){
 			Font font = ((FontProvider) disp).getFont();
 			if(font==null){
-				logger.error("Can't load font '" +  ((FontProvider) disp).getFontName() + "'");
+				LOG.error("Can't load font '" +  ((FontProvider) disp).getFontName() + "'");
 			}else{
 //				Font origFont = btn.getFont();
 //				btn.setFont(origFont.deriveFont(origFont.getSize()*1.0f));

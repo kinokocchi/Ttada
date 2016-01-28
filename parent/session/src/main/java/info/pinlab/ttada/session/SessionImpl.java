@@ -1,13 +1,13 @@
 package info.pinlab.ttada.session;
 
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import info.pinlab.pinsound.PlayerDeviceFacotry;
 import info.pinlab.pinsound.RecorderDeviceController;
@@ -21,6 +21,7 @@ import info.pinlab.ttada.cache.disk.DiskCache;
 import info.pinlab.ttada.cache.disk.DiskEnrollController;
 import info.pinlab.ttada.cache.disk.LocalSaveHook;
 import info.pinlab.ttada.core.cache.Cache;
+import info.pinlab.ttada.core.cache.RemoteCache;
 import info.pinlab.ttada.core.control.AudioPlayRecController;
 import info.pinlab.ttada.core.control.EnrollController;
 import info.pinlab.ttada.core.control.EnrollManagerReqListener;
@@ -49,7 +50,7 @@ import info.pinlab.ttada.session.Registry.Key;
 
 public class SessionImpl implements SessionControllerWithAudio, SessionController, 
 							EnrollManagerReqListener{
-	public static Logger logger = Logger.getLogger(SessionImpl.class);
+	public static Logger LOG = LoggerFactory.getLogger(SessionImpl.class);
 	private Registry conf;
 	private PlayerTopView topView = null;
 	
@@ -81,7 +82,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 	
 	public SessionImpl(){
 		this(Registry.getDefaultInstance());
-		logger.info("Created default Registry for Session");
+		LOG.info("Created default Registry for Session");
 	}
 	
 	public SessionImpl(Registry conf){
@@ -145,15 +146,15 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 		}else{ //-- not in cache: create!
 			//-- init view and controller for task 
 			String taskClazzName = taski.getTask().getClass().getSimpleName();
-			logger.debug("Setting display for '" + taskClazzName +"'");
+			LOG.debug("Setting display for '" + taskClazzName +"'");
 			String controllClazzName = 
 					TaskController.class.getPackage().getName() + "." 
 					+ taskClazzName + "Controller";
-			logger.debug("Looking for class   '" + controllClazzName+"'");
+			LOG.debug("Looking for class   '" + controllClazzName+"'");
 			
 			try{
 				Class<?> controllClazz = Class.forName(controllClazzName);
-				logger.debug("Creating '" +controllClazzName +"' on the fly");
+				LOG.debug("Creating '" +controllClazzName +"' on the fly");
 				taskController = (TaskController)controllClazz.newInstance();
 			} catch (InstantiationException e) {
 				e.printStackTrace();
@@ -197,7 +198,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 		if(taskController instanceof AudioPlayRecController){
 			final AudioRecorder recorder = new AudioRecorder();
 			recorder.setRecorderDevice(recorderDevice);
-			logger.debug("Setting sound device for '" +taskController.getClass().getName() +"'  " + recorder);
+			LOG.debug("Setting sound device for '" +taskController.getClass().getName() +"'  " + recorder);
 			((AudioPlayRecController)taskController).setAudioRecorder(recorder);
 
 			AudioPlayer player = new AudioPlayer();
@@ -298,12 +299,12 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 			}
 			
 			if(!isSaved){
-				logger.error("Couldn't save TaskSet locally! No DiskCache was found!");
+				LOG.error("Couldn't save TaskSet locally! No DiskCache was found!");
 			}
 //			if(Initializer.cm == null){
-//				logger.warn("Cache manager is not set!");
+//				LOG.warn("Cache manager is not set!");
 //			}else{
-//				logger.info("Saving TaskSet to cache");
+//				LOG.info("Saving TaskSet to cache");
 //				//TODO: is does not save locally!
 //				Initializer.cm.cache(DiskCache.getCacheLevel(), Initializer.tset, TaskSet.class);
 //			}
@@ -338,13 +339,13 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 ////				NO_GUI = true;
 //				throw new IllegalStateException("TopView is NULL! The session needs a view!");
 //			}
-//			logger.info("Starting NO-GUI session");
+//			LOG.info("Starting NO-GUI session");
 //		}
 		
 		
 		if(conf.getBoolean(Key.PLAYER_HAS_GUI)){
 			if(topView==null){
-				logger.error("No gui is available!");
+				LOG.error("No gui is available!");
 			}else{
 				topView.startGui();
 				
@@ -354,7 +355,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 			}
 			doNext();
 		}else{
-			logger.info("no gui - shutting down");
+			LOG.info("no gui - shutting down");
 			//-- no gui: do nothing
 			doShutDown();
 		}
@@ -383,7 +384,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 	@Override
 	public void doPrev() {
 		if(!hasPrev()){
-			logger.debug("No previous task '" + currentTaskIx);
+			LOG.debug("No previous task '" + currentTaskIx);
 			return;
 		}
 		
@@ -437,12 +438,12 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 			List<String> deviceNames = new ArrayList<String>();
 			if(deviceNames.size() > 0 && deviceNames.get(0) != null){
 				int selectedDevNameIx = topView.showAudioDevSelector(deviceNames);
-				logger.debug("Selected audio device ix " + selectedDevNameIx + ".  '" + deviceNames.get(selectedDevNameIx) +"'");
+				LOG.debug("Selected audio device ix " + selectedDevNameIx + ".  '" + deviceNames.get(selectedDevNameIx) +"'");
 			}else{
-				logger.warn("Device names are not available!");
+				LOG.warn("Device names are not available!");
 			}
 		}else{
-			logger.debug("Don't start Audio Dev selector as gui is NOT available!");
+			LOG.debug("Don't start Audio Dev selector as gui is NOT available!");
 		}
 	}
 
@@ -474,6 +475,24 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 	
 	
 	
+	
+	@Override
+	public boolean login(String id, char [] pwd){
+		conf.put(Key.REMOTE_LOGIN_ID, id);
+		conf.put(Key.REMOTE_LOGIN_PWD, String.valueOf(pwd));
+		
+		RemoteCache cache = SessionFactory.initRemoteCache(conf);
+		if(cache==null){
+			
+			return false;
+		}
+		
+		return true;
+	}
+			
+	
+	
+	
 	/**
 	 * Runs after session is finished. 
 	 * Shuts down everything if finished. 
@@ -486,7 +505,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 
 		@Override
 		public void run(){
-			logger.info("Shutdown initiated..");
+			LOG.info("Shutdown initiated..");
 			LOOP:while(true){
 				try {
 					Thread.sleep(timeResInMs);
@@ -494,7 +513,7 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 
 
 				if(!enrollManager.isComplete()){ //-- wait till enrolls complete 
-//					logger.info("Enroll not complete yet..");
+//					LOG.info("Enroll not complete yet..");
 					continue LOOP;
 				}else{
 					if(topView.isEnrollViewVisible()){
@@ -526,19 +545,19 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 //			playerDeviceFactory.disposeAll();
 		}
 		//-- do shutdown house keeping if necessary
-		logger.info("Shutdown - complete");
+		LOG.info("Shutdown - complete");
 	}
 	
 	
 	@Override
 	public void setAudioPlayerDeviceFactory(PlayerDeviceFacotry playerFactory) {
-		logger.info("Audio player device controller was set to '" + playerFactory +"'");
+		LOG.info("Audio player device controller was set to '" + playerFactory +"'");
 		playerDeviceFactory = playerFactory;
 	}
 
 	@Override
 	public void setAudioRecorderDeviceController(RecorderDeviceController device) {
-		logger.info("Audio recorder device controller was set to '" + device +"'");
+		LOG.info("Audio recorder device controller was set to '" + device +"'");
 		recorderDevice = device;
 //		audioRecorderController = device;
 	}

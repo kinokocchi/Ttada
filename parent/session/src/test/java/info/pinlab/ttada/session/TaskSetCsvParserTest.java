@@ -19,15 +19,15 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.List;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class TaskSetCsvParserTest {
-	public static Logger logger = Logger.getLogger(TaskSetCsvParser.class);
+	public static Logger LOG = LoggerFactory.getLogger(TaskSetCsvParser.class);
 	static WavClip wav = null;
 	static File tmpDir = null;
 	static File wavDir = null; 
@@ -36,11 +36,9 @@ public class TaskSetCsvParserTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BasicConfigurator.resetConfiguration();
-		BasicConfigurator.configure();
 		
 		tmpDir = File.createTempFile("pinlab-testing_", ""); tmpDir.delete();
-		logger.info("Creating tmp dir '"+ tmpDir.getAbsolutePath() + "'");
+		LOG.info("Creating tmp dir '"+ tmpDir.getAbsolutePath() + "'");
 		tmpDir.mkdirs();
 		wavDir = new File(tmpDir, "wavs");
 		wavDir.mkdirs();
@@ -66,7 +64,7 @@ public class TaskSetCsvParserTest {
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
 		if(tmpDir!=null){
-			logger.info("Removing tmp dir '"+ tmpDir.getAbsolutePath() + "'");
+			LOG.info("Removing tmp dir '"+ tmpDir.getAbsolutePath() + "'");
 			tmpDir.delete();
 		}
 	}

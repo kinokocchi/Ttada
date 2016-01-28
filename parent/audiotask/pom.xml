@@ -26,10 +26,14 @@
 			<artifactId>utils</artifactId>
 		</dependency>
 
-		<dependency>
-			<groupId>info.pinlab.pinsound</groupId>
-			<artifactId>audiocore</artifactId>
-		</dependency>
+	<dependency>
+		<groupId>info.pinlab.pinsound</groupId>
+		<artifactId>audiocore</artifactId>
+	</dependency>
+
+
+
+
 
 		<dependency>
 			<groupId>info.pinlab.ttada</groupId>

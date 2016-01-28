@@ -1,11 +1,16 @@
 package info.pinlab.ttada.core.control;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.pinlab.pinsound.app.AudioPlayer;
 import info.pinlab.pinsound.app.AudioPlayerListener;
 import info.pinlab.pinsound.app.AudioPlayerView;
 import info.pinlab.ttada.core.model.rule.AudioRule;
 
 public class PlayerController implements AudioPlayController, AudioPlayerListener{
+	public static Logger LOG = LoggerFactory.getLogger(PlayerController.class);
+	
 		private AudioPlayer player;
 		private AudioRule arule = null;
 		private AudioPlayerView view = null;
@@ -120,13 +125,13 @@ public class PlayerController implements AudioPlayController, AudioPlayerListene
 			}
 			//-- too many plays
 			if(arule != null && arule.maxPlayN > -1 && audioPlayN >= arule.maxPlayN ) {
-				TaskControllerWithAudio.logger.debug("Can't play because of too many plays! " + audioPlayN + ">" + arule.maxPlayN);
+				LOG.debug("Can't play because of too many plays! " + audioPlayN + ">" + arule.maxPlayN);
 				view.setReadyToPlayState();
 				return; 
 			}
 			//-- just can't play audio by rule
 			if(arule != null && !arule.canPlay ){
-				TaskControllerWithAudio.logger.debug("Can't play because of AudioRule is set to canPlay==false");
+				LOG.debug("Can't play because of AudioRule is set to canPlay==false");
 				view.setReadyToPlayState(); 
 				return; 
 			}
@@ -144,14 +149,14 @@ public class PlayerController implements AudioPlayController, AudioPlayerListene
 		@Override
 		public void reqPauseToggle(){
 			if(player == null) {
-				TaskControllerWithAudio.logger.debug("Can't toggle pause/play because no player is set!");
+				LOG.debug("Can't toggle pause/play because no player is set!");
 				return;
 			}
 			if(player.isPlaying()){
 				//-- just can't pause audio
 				if(arule != null &&  ! arule.canPause ){ 
 					view.setPlayingState();
-					TaskControllerWithAudio.logger.debug("Can't toggle pause/play because audio rule doesn't allow (canPause=false)!");
+					LOG.debug("Can't toggle pause/play because audio rule doesn't allow (canPause=false)!");
 					return;
 				}
 				player.reqPauseToggle();

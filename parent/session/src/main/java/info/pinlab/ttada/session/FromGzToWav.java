@@ -1,16 +1,18 @@
 package info.pinlab.ttada.session;
 
-import info.pinlab.pinsound.WavClip;
-import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
-import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
-import info.pinlab.utils.FileStringTools;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import info.pinlab.pinsound.WavClip;
+import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
+import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
+import info.pinlab.utils.FileStringTools;
+
 
 
 /**
@@ -21,7 +23,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class FromGzToWav {
-	public static Logger logger = Logger.getLogger(FromGzToWav.class);
+	public static Logger LOG = LoggerFactory.getLogger(FromGzToWav.class);
 
 	static SimpleJsonSerializer jsonSerializer ;
 
@@ -29,7 +31,7 @@ public class FromGzToWav {
 		
 		jsonSerializer = new SimpleGsonSerializerFactory().build();
 		String absPath = new File(path).getAbsolutePath();
-		logger.info("Reading wav from '" + absPath + "'");
+		LOG.info("Reading wav from '" + absPath + "'");
 		try {
 			byte[] inBytes= FileStringTools.getFileAsByteArray(absPath);
 			String json = FileStringTools.unzip(inBytes);

@@ -29,7 +29,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -49,7 +50,7 @@ import org.apache.log4j.Logger;
  */
 @SuppressWarnings("serial")
 public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel {
-	public static Logger logger = Logger.getLogger(AbstractTaskPanel.class);
+	public static Logger LOG = LoggerFactory.getLogger(AbstractTaskPanel.class);
 	
 	private GridBagConstraints gbcTop;
 	private GridBagConstraints gbcBottom ;
@@ -133,9 +134,9 @@ public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel 
 					Font customFont = ((FontProvider)disp).getFont();
 					String fontName = ((FontProvider)disp).getFontName();
 					if(customFont == null){
-						logger.error("Can't set font '" + fontName  + "'");
+						LOG.error("Can't set font '" + fontName  + "'");
 					}else{
-						logger.debug("Setting font '" + fontName  + "'");
+						LOG.debug("Setting font '" + fontName  + "'");
 						customFont = customFont.deriveFont(((FontProvider)disp).getFontSize());
 						label.setFont(customFont);
 					}

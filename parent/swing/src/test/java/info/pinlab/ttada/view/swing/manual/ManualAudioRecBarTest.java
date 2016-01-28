@@ -1,5 +1,8 @@
 package info.pinlab.ttada.view.swing.manual;
 
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import info.pinlab.pinsound.WavClip;
 import info.pinlab.pinsound.app.AudioPlayer;
 import info.pinlab.pinsound.app.AudioPlayerView;
@@ -10,11 +13,6 @@ import info.pinlab.snd.oal.OpenAlPlayer;
 import info.pinlab.snd.oal.OpenAlRecorder;
 import info.pinlab.ttada.view.swing.PlayerTopPanel;
 import info.pinlab.ttada.view.swing.audio.AudioRecorderBar;
-
-import javax.swing.JFrame;
-import javax.swing.SwingUtilities;
-
-import org.apache.log4j.BasicConfigurator;
 
 
 public class ManualAudioRecBarTest {
@@ -118,7 +116,6 @@ public class ManualAudioRecBarTest {
 	
 	
 	public static void main(String [] args) throws Exception{
-		BasicConfigurator.configure();
 		PlayerTopPanel.setNimbusLF();
 
 		final AudioRecorderBar bar = new AudioRecorderBar();

@@ -1,7 +1,5 @@
 package info.pinlab.ttada.session;
 
-
-
 import info.pinlab.ttada.cache.disk.LocalSaveHookForTxtResponse;
 import info.pinlab.ttada.cache.disk.LocalSaveHookForWavResponse;
 import info.pinlab.utils.FileStringTools;
@@ -16,13 +14,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Properties;
 
 
 public class Registry implements Iterable<Registry.Key> {
-	public static Logger logger = Logger.getLogger(Registry.class);
+	public static Logger LOG = LoggerFactory.getLogger(Registry.class);
 	public static int id_ = 0;
 	private static final Map<Object, Registry> propertyCache ;
 
@@ -154,9 +154,9 @@ public class Registry implements Iterable<Registry.Key> {
 	 */
 	static {
 		root = new Registry(System.getProperties(), null);
-		logger.info("Root conf created as 'conf_" + root.id +"'");
+		LOG.info("Root conf created as 'conf_" + root.id +"'");
 		defaultConf = new Registry(null, root);
-		logger.info("Default conf created as 'conf_" + defaultConf.id +"'");
+		LOG.info("Default conf created as 'conf_" + defaultConf.id +"'");
 
 		propertyCache = new HashMap<Object, Registry>();
 		
@@ -169,11 +169,11 @@ public class Registry implements Iterable<Registry.Key> {
 //		InputStream is = Configurator.class.getResourceAsStream(Key.DIST_CONF_FILE.keyDefValue);
 //		if(is!=null){
 //		try {
-//			logger.info("Loading distribution conf '" + Key.DIST_CONF_FILE.keyDefValue + "' to conf_" + defaultConf.id);
+//			LOG.info("Loading distribution conf '" + Key.DIST_CONF_FILE.keyDefValue + "' to conf_" + defaultConf.id);
 //			defaultConf.properties.load(is);
 //		} catch (IOException ignore) {	}
 //		}else{
-//			logger.info("No distribution conf  at '" + Key.DIST_CONF_FILE.keyDefValue + "'");
+//			LOG.info("No distribution conf  at '" + Key.DIST_CONF_FILE.keyDefValue + "'");
 //		}
 //		
 		
@@ -181,7 +181,7 @@ public class Registry implements Iterable<Registry.Key> {
 //		final File usrDir = new File(System.getProperty("user.home")  +  FileStringTools.SEP + Key.USER_DIR.keyDefValue);
 //		if(!usrDir.exists()){
 //			if(usrDir.mkdirs()){
-//				logger.info("Creating user directory in '" + usrDir.getAbsolutePath() + "'");
+//				LOG.info("Creating user directory in '" + usrDir.getAbsolutePath() + "'");
 //			}else{
 //				//-- can't create user dir!
 //			}
@@ -189,17 +189,17 @@ public class Registry implements Iterable<Registry.Key> {
 //		}
 //		final File usrConfFile = new File(usrDir.getAbsolutePath() +  FileStringTools.SEP + Key.USER_CONF_FILE.keyDefValue);
 //		if(usrConfFile.exists() && usrConfFile.isFile()){
-//			logger.info( "Found user conf file '" + usrConfFile.getAbsolutePath() + "'" );
+//			LOG.info( "Found user conf file '" + usrConfFile.getAbsolutePath() + "'" );
 //			try {
 //				defaultConf.put(new FileInputStream(usrConfFile));
-//				logger.info("Loading user conf into 'conf_" + defaultConf.id+"'");
+//				LOG.info("Loading user conf into 'conf_" + defaultConf.id+"'");
 //			} catch (FileNotFoundException e) {
-//				logger.info( e.getClass().getSimpleName() + " Can't read user conf file in '" + usrConfFile.getAbsolutePath() + "'" );
+//				LOG.info( e.getClass().getSimpleName() + " Can't read user conf file in '" + usrConfFile.getAbsolutePath() + "'" );
 //			} catch (IOException e) {
-//				logger.info( e.getClass().getSimpleName() + " Can't read user conf file in '" + usrConfFile.getAbsolutePath() + "'" );
+//				LOG.info( e.getClass().getSimpleName() + " Can't read user conf file in '" + usrConfFile.getAbsolutePath() + "'" );
 //			}
 //		}else{
-//			logger.info( "No user conf file found in '" + usrConfFile.getAbsolutePath() + "'" );
+//			LOG.info( "No user conf file found in '" + usrConfFile.getAbsolutePath() + "'" );
 //		}
 	}
 	
@@ -216,13 +216,13 @@ public class Registry implements Iterable<Registry.Key> {
 	 */
 	public static Registry getDefaultInstance(){
 		Registry conf = new Registry(defaultConf);
-		logger.info("New conf (default's child) created 'conf_" + conf.id +"'");
+		LOG.info("New conf (default's child) created 'conf_" + conf.id +"'");
 		return conf;
 	}
 	
 	public static Registry getEmptyInstance(){
 		Registry conf = new Registry(null, null);
-		logger.info("New empty conf 'conf_" + conf.id );
+		LOG.info("New empty conf 'conf_" + conf.id );
 		return conf;
 	}
 	
@@ -233,7 +233,7 @@ public class Registry implements Iterable<Registry.Key> {
 		}
 		Registry conf = getDefaultInstance();
 		propertyCache.put(id, conf);
-		logger.info("New conf for '" + id + "' named " + conf.id );
+		LOG.info("New conf for '" + id + "' named " + conf.id );
 		return conf;
 	}
 	
@@ -250,7 +250,7 @@ public class Registry implements Iterable<Registry.Key> {
 		}
 		Registry conf = new Registry(parent);
 		propertyCache.put(id, conf);
-		logger.info("New conf for '" + id + "' named " + conf.id );
+		LOG.info("New conf for '" + id + "' named " + conf.id );
 		return conf;
 	}
 	
@@ -339,9 +339,9 @@ public class Registry implements Iterable<Registry.Key> {
 	synchronized private void put(String key, String val){
 		String oldVal = this.get(key);
 		if(oldVal!=null && !oldVal.equals(val)){
-			logger.info("conf_"+id+ " Overriding key '" + key + "'='" + oldVal +"' >> '" + val + "'");
+			LOG.info("conf_"+id+ " Overriding key '" + key + "'='" + oldVal +"' >> '" + val + "'");
 		}else{
-			logger.info("conf_"+id+ " Adding key '" + key + "'='" + "'" + val + "'");
+			LOG.info("conf_"+id+ " Adding key '" + key + "'='" + "'" + val + "'");
 		}
 		properties.put(key, val);
 	}
@@ -432,7 +432,7 @@ public class Registry implements Iterable<Registry.Key> {
 			try{
 				return Integer.parseInt(val);
 			}catch(NumberFormatException e){
-				logger.error("conf_"+id+  " It is not an integer, is it? '" + val +"'");
+				LOG.error("conf_"+id+  " It is not an integer, is it? '" + val +"'");
 			}
 		}
 		return null;

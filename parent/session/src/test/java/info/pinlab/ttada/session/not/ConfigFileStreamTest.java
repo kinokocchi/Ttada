@@ -1,6 +1,13 @@
 package info.pinlab.ttada.session.not;
 
 import static org.junit.Assert.assertTrue;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import info.pinlab.ttada.core.cache.CachedValue;
 import info.pinlab.ttada.core.cache.MemCache;
 import info.pinlab.ttada.core.cache.SimpleCacheManagerImpl.SimpleCacheManagerBuilder;
@@ -11,18 +18,10 @@ import info.pinlab.ttada.core.model.task.Task;
 import info.pinlab.ttada.core.model.task.TaskSet;
 import info.pinlab.ttada.session.ConfigFileParser;
 
-import org.apache.log4j.BasicConfigurator;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 public class ConfigFileStreamTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BasicConfigurator.configure();
 		
 		SimpleCacheManagerBuilder scmb = new SimpleCacheManagerBuilder();
 		//-- Order is important --//

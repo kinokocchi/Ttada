@@ -10,7 +10,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -22,7 +23,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class DiskCache implements LocalCache{
-	public static final Logger logger = Logger.getLogger(DiskCache.class);
+	public static final Logger logger = LoggerFactory.getLogger(DiskCache.class);
 	public static final String SEP = FileStringTools.SEP; // System.getProperty("file.separator");
 	public static final String EXT = ".gz";
 

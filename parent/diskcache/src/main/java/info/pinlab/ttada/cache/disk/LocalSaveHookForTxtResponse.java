@@ -1,12 +1,5 @@
 package info.pinlab.ttada.cache.disk;
 
-import info.pinlab.ttada.core.model.response.Response;
-import info.pinlab.ttada.core.model.response.ResponseContent;
-import info.pinlab.ttada.core.model.response.ResponseContentText;
-import info.pinlab.ttada.core.model.response.ResponseHeader;
-import info.pinlab.utils.AbsoluteTime;
-import info.pinlab.utils.FileStringTools;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -15,7 +8,16 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import info.pinlab.ttada.core.model.response.Response;
+import info.pinlab.ttada.core.model.response.ResponseContent;
+import info.pinlab.ttada.core.model.response.ResponseContentText;
+import info.pinlab.ttada.core.model.response.ResponseHeader;
+import info.pinlab.utils.AbsoluteTime;
+import info.pinlab.utils.FileStringTools;
+
 
 /**
  * Saves responses into a single file while running a session (eg. an experiment)
@@ -25,7 +27,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class LocalSaveHookForTxtResponse extends AbstractSaveHook{
-	public static Logger logger = Logger.getLogger(LocalSaveHookForTxtResponse.class); 
+	public static Logger LOG = LoggerFactory.getLogger(LocalSaveHookForTxtResponse.class); 
 	private final File responseFile ; 
 	private PrintWriter writer;
 	
@@ -44,7 +46,7 @@ public class LocalSaveHookForTxtResponse extends AbstractSaveHook{
 		}
 		
 		try {
-			logger.info("Creating text response file '" + responseFile.getAbsolutePath() + "'");
+			LOG.info("Creating text response file '" + responseFile.getAbsolutePath() + "'");
 			writer = new PrintWriter(new BufferedWriter(new FileWriter(responseFile, true)));
 			writeFileHdr();
 		} catch (IOException e) {

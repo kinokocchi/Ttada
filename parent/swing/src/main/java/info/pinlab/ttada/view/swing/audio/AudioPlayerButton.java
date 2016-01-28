@@ -16,7 +16,6 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.BasicConfigurator;
 
 @SuppressWarnings("serial")
 public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
@@ -89,8 +88,6 @@ public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
 	}
 	
 	public static void main(String[ ]args) throws Exception{
-		BasicConfigurator.configure();
-
 		PlayerTopPanel.setNimbusLF();
 		final AudioPlayerButton btn = new AudioPlayerButton();
 		AudioPlayer player = new AudioPlayer();

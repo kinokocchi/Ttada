@@ -43,11 +43,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
 										UserInteractionView, EnrollViewFactory{
-	public static Logger logger = Logger.getLogger(PlayerTopPanel.class);
+	public static Logger LOG = LoggerFactory.getLogger(PlayerTopPanel.class);
 
 	private final JFrame frame;
 	private final Container contentPane;
@@ -124,13 +125,13 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 		try{
 			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
 				if ("Nimbus".equals(info.getName())) {
-					logger.info("Look and feel is set to " + info.getName());
+					LOG.info("Look and feel is set to " + info.getName());
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Failed to set look and feel to Nimbus!");
+			LOG.error("Failed to set look and feel to Nimbus!");
 		}
 	}
 	
@@ -226,7 +227,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 			@Override
 			public void run() {
 				if(control==null){
-					logger.warn("No control object is set for this session!");
+					LOG.warn("No control object is set for this session!");
 				}
 				frame.setSize(500,450);
 				frame.setVisible(true);
@@ -254,7 +255,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 	@Override
 	public void setTaskView(final TaskView view){
 		if(!(view instanceof TaskViewPanel)){
-//			logger.error("Not a TaskViewPanel in setter! '" + view.getClass() + "' can't be set for panel!");
+//			LOG.error("Not a TaskViewPanel in setter! '" + view.getClass() + "' can't be set for panel!");
 			if(view == null){
 				throw new IllegalArgumentException("NULL received as TaskViewPanel in view setter! '" );
 			}else{
@@ -293,18 +294,18 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				panelClass = Class.forName(panelName);
 			} catch (ClassNotFoundException e) {
 				String err = "No such class available as '"+ panelClass +"'";
-				logger.error(err);
+				LOG.error(err);
 				e.printStackTrace();
 				throw new IllegalStateException(err);
 			}
 		}
 		
 		public void run() {
-			logger.debug("Dynamically creating view: '" + panelClass +"'");
+			LOG.debug("Dynamically creating view: '" + panelClass +"'");
 			try {
 				view = (TaskView) panelClass.newInstance();
 			} catch (InstantiationException e) {
-				logger.error("Can't instantiate class '"+ panelClass +"'");
+				LOG.error("Can't instantiate class '"+ panelClass +"'");
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
 				e.printStackTrace();
@@ -349,7 +350,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				}
 			}).start();
 		}else{
-			logger.warn("No session controller is set!");
+			LOG.warn("No session controller is set!");
 			if(showCloseConfirmDialog()){
 				this.dispose();
 			}
@@ -490,7 +491,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 	
 	
 	public void setEnrollViewVisible(final EnrollView view, final boolean isVisible){
-		logger.debug("Making EnrollView visible: " + isVisible);
+		LOG.debug("Making EnrollView visible: " + isVisible);
 		final JFrame frame = enrollViewFrames.get(view);
 		if(frame==null){
 			throw new IllegalStateException("The view must have frame!");

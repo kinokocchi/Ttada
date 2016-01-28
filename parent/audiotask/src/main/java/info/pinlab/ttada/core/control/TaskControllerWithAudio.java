@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import info.pinlab.pinsound.WavClip;
 import info.pinlab.pinsound.app.AudioPlayer;
@@ -27,7 +28,7 @@ import info.pinlab.ttada.core.view.TaskView;
  *
  */
 public class TaskControllerWithAudio implements TaskController{
-	public static Logger logger = Logger.getLogger(TaskControllerWithAudio.class);
+	public static Logger logger = LoggerFactory.getLogger(TaskControllerWithAudio.class);
 	private SessionControllerWithAudio sessionControllerWithAudio = null;
 
 	List<PlayerController> playerTokens = new ArrayList<PlayerController>();

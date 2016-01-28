@@ -37,10 +37,11 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class RemoteRestConnection {
-	public static Logger logger = Logger.getLogger(RemoteRestConnection.class);
+	public static Logger logger = LoggerFactory.getLogger(RemoteRestConnection.class);
 
 	private final String scheme, host;
 	private final int port;

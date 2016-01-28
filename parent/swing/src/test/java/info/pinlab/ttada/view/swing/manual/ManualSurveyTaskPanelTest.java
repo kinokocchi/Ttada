@@ -7,12 +7,9 @@ import info.pinlab.ttada.session.Registry.Key;
 import info.pinlab.ttada.session.app.CLI;
 import info.pinlab.ttada.view.swing.PlayerTopPanel;
 
-import org.apache.log4j.BasicConfigurator;
-
 public class ManualSurveyTaskPanelTest {
 
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
 		PlayerTopPanel.setNimbusLF();
 		
 		SurveyTask task = new SurveyTask();

@@ -11,7 +11,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,7 +27,7 @@ import org.apache.log4j.Logger;
  * @param <T>
  */
 public class TypeCacher<T> {
-	public static Logger logger = Logger.getLogger(TypeCacher.class);
+	public static Logger LOG = LoggerFactory.getLogger(TypeCacher.class);
 	private final Class<T> clazz;
 	private final File rootDir; 
 	private final Map<Pointer, File> cache;
@@ -47,7 +48,7 @@ public class TypeCacher<T> {
 		cache = new HashMap<Pointer, File>();
 
 		if(!rootDir.isDirectory()){
-			logger.info("Creating cache dir " + rootDir.getAbsolutePath());
+			LOG.info("Creating cache dir " + rootDir.getAbsolutePath());
 			if(!rootDir.mkdirs())
 				throw new IllegalArgumentException("CaN't mkdir '" + rootDir.getAbsolutePath()+"'");
 		}
@@ -88,9 +89,9 @@ public class TypeCacher<T> {
 		if(path!=null){
 			if(path.exists() && path.isFile()){
 				if(path.delete()){
-					logger.debug("Removed '" + path +"'");
+					LOG.debug("Removed '" + path +"'");
 				}else{
-					logger.debug("Failed to removed '" + path +"'");
+					LOG.debug("Failed to removed '" + path +"'");
 				}
 			}
 		}
@@ -119,10 +120,10 @@ public class TypeCacher<T> {
 			T t = jsonAdapter.fromJson(json, clazz);
 			return t;
 		} catch (FileNotFoundException e) {
-			logger.warn("No such resource as '" + absPath);
+			LOG.warn("No such resource as '" + absPath);
 			return null;
 		}catch (IllegalStateException e){
-			logger.error("Not a gzip object? '" + absPath +"'");
+			LOG.error("Not a gzip object? '" + absPath +"'");
 			return null;
 		}
 	}
@@ -133,7 +134,7 @@ public class TypeCacher<T> {
 			FileOutputStream fos = new FileOutputStream(savePath);
 			fos.write(bytes);
 			fos.close();
-			logger.info("Saved cache: '"  + savePath + "'");
+			LOG.info("Saved cache: '"  + savePath + "'");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -165,7 +166,7 @@ public class TypeCacher<T> {
 	
 //	private T loadFromDisk(String ref){
 //		File resourcePath = new File (rootDir + SEP + ref );
-//		//		logger.debug("Loading resource '" + resourcePath.getAbsolutePath());
+//		//		LOG.debug("Loading resource '" + resourcePath.getAbsolutePath());
 //		try {
 //			byte[] bytes = FileStringTools.getFileAsByteArray(resourcePath.getAbsolutePath());
 //			String json = FileStringTools.unzip(bytes);
@@ -179,11 +180,11 @@ public class TypeCacher<T> {
 //			return obj;
 //		} catch (FileNotFoundException e) {
 //			//			e.printStackTrace();
-//			logger.warn("No such resource as '" + resourcePath.getAbsolutePath());
+//			LOG.warn("No such resource as '" + resourcePath.getAbsolutePath());
 //			return null;
 //		}catch (IllegalStateException e){
 //			//			e.printStackTrace();
-//			logger.error("Not a gzip object? '" + resourcePath.getAbsolutePath() +"'");
+//			LOG.error("Not a gzip object? '" + resourcePath.getAbsolutePath() +"'");
 //			return null;
 //		}
 //	}

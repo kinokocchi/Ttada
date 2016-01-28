@@ -44,7 +44,7 @@ import info.pinlab.ttada.core.view.EnrollViewFactory;
 import info.pinlab.ttada.core.view.PlayerTopView;
 import info.pinlab.ttada.core.view.RecordTaskView;
 import info.pinlab.ttada.core.view.TaskView;
-import info.pinlab.ttada.core.view.UserInterctionView;
+import info.pinlab.ttada.core.view.UserInteractionView;
 import info.pinlab.ttada.session.Registry.Key;
 
 public class SessionImpl implements SessionControllerWithAudio, SessionController, 
@@ -570,9 +570,9 @@ public class SessionImpl implements SessionControllerWithAudio, SessionControlle
 	
 	public void reqStartFallbackEnroll(EnrollController failedEnroller){
 		
-		UserInterctionView ui = null;
-		if(topView!=null && topView instanceof UserInterctionView){
-			ui = (UserInterctionView) topView;
+		UserInteractionView ui = null;
+		if(topView!=null && topView instanceof UserInteractionView){
+			ui = (UserInteractionView) topView;
 		}
 		final ResponseSet rset = failedEnroller.getResponseSet();
 

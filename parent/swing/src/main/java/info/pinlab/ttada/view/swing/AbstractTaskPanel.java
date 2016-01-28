@@ -76,6 +76,8 @@ public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel 
 		gbcBottom.ipady = 0;
 		gbcBottom.gridy = 1;
 //		addComponentListener(this);
+		
+		setFocusTraversalKeysEnabled(false);
 	}
 	
 	public void setTopPanel(Component panel){

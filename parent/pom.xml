@@ -21,6 +21,7 @@
 		<module>swing</module>
 		<module>dbcache</module>
 		<module>entrytask</module>
+		<module>LoginTask</module>
 	</modules>
 
 

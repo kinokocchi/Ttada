@@ -10,7 +10,7 @@ import info.pinlab.ttada.core.view.EnrollViewFactory;
 import info.pinlab.ttada.core.view.NavigatorView;
 import info.pinlab.ttada.core.view.PlayerTopView;
 import info.pinlab.ttada.core.view.TaskView;
-import info.pinlab.ttada.core.view.UserInterctionView;
+import info.pinlab.ttada.core.view.UserInteractionView;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -20,6 +20,8 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
@@ -43,7 +45,8 @@ import javax.swing.UIManager.LookAndFeelInfo;
 
 import org.apache.log4j.Logger;
 
-public class PlayerTopPanel implements PlayerTopView, WindowListener, WindowFocusListener, UserInterctionView, EnrollViewFactory{
+public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
+										UserInteractionView, EnrollViewFactory{
 	public static Logger logger = Logger.getLogger(PlayerTopPanel.class);
 
 	private final JFrame frame;
@@ -55,8 +58,6 @@ public class PlayerTopPanel implements PlayerTopView, WindowListener, WindowFocu
 	private final GridBagConstraints dispPanelGBC;
 	
 	private SessionController control = null;
-//	private Map<EnrollController, EnrollView> enrollViews = new HashMap<EnrollController, EnrollView>();
-	
 
 	
 	class MouseClickListListener extends MouseAdapter{
@@ -226,12 +227,8 @@ public class PlayerTopPanel implements PlayerTopView, WindowListener, WindowFocu
 			public void run() {
 				if(control==null){
 					logger.warn("No control object is set for this session!");
-//					frame.setTitle("No control object!");
 				}
 				frame.setSize(500,450);
-				
-				
-				
 				frame.setVisible(true);
 			}
 		});
@@ -546,6 +543,27 @@ public class PlayerTopPanel implements PlayerTopView, WindowListener, WindowFocu
 			}
 		}
 		return false;
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		System.out.println("TOP Key pressed :" + arg0);
+		
+	}
+
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 

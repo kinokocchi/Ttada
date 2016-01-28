@@ -3,12 +3,10 @@ package info.pinlab.ttada.session.manual;
 import info.pinlab.ttada.session.Registry.Key;
 import info.pinlab.ttada.session.app.CLI;
 
-import org.apache.log4j.BasicConfigurator;
 
 public class ManualExternalResourceLoaderTest {
 
 	public static void main(String[] args) throws Exception{
-		BasicConfigurator.configure();
 		CLI cli = new CLI();
 		//-- these defaults can be overwritten by runtime arguments
 		cli.addRegItem(Key.USER, "Experimenter");

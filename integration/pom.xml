@@ -12,13 +12,10 @@
 		<artifactId>parent</artifactId>
 		<version>0.1</version>
 	</parent>
-
-
 	<modules>
 		<module>it_diskcache</module>
 		<module>it_session_swing</module>
 	</modules>
-
 
 	<dependencyManagement>
 		<dependencies>
@@ -55,6 +52,19 @@
 				<type>test-jar</type>
 				<scope>test</scope>
 			</dependency>
+
+
+
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+			</dependency>
+			<dependency>
+				<groupId>ch.qos.logback</groupId>
+				<artifactId>logback-classic</artifactId>
+			</dependency>
+
+
 		</dependencies>
 	</dependencyManagement>
 

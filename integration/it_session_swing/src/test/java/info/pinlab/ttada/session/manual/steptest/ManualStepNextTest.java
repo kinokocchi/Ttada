@@ -1,6 +1,5 @@
 package info.pinlab.ttada.session.manual.steptest;
 
-import org.apache.log4j.BasicConfigurator;
 
 import info.pinlab.ttada.core.model.MultichoiceTask;
 import info.pinlab.ttada.core.model.task.TaskSet;
@@ -29,7 +28,6 @@ public class ManualStepNextTest {
 	
 	public static void main(String[] args) {
 	
-		BasicConfigurator.configure();
 		CLI cli = new CLI();
 		cli.addRegItem(Key.LOCAL_AVAILABLE, false);
 		

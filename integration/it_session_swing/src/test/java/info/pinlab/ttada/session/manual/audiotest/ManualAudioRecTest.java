@@ -14,7 +14,6 @@ import java.io.InputStream;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import org.apache.log4j.BasicConfigurator;
 
 public class ManualAudioRecTest {
 
@@ -53,8 +52,6 @@ public class ManualAudioRecTest {
 
 
 	public static void main(String[] args) throws Exception{
-		BasicConfigurator.configure();
-
 		ManualAudioRecTest test = new ManualAudioRecTest();
 		Registry conf = Registry.getDefaultInstance();
 		conf.put(Key.REMOTE_AVAILABLE, false);

@@ -1,6 +1,5 @@
 package info.pinlab.ttada.integration.diskcache.manual;
 
-import org.apache.log4j.BasicConfigurator;
 
 import info.pinlab.ttada.core.model.task.InfoTask;
 import info.pinlab.ttada.core.model.task.TaskSet;
@@ -10,7 +9,6 @@ import info.pinlab.ttada.session.app.CLI;
 public class ManualDiskEnrolTestWithGui {
 
 	public static void main(String[] args) {
-		BasicConfigurator.configure();
 		CLI cli = new CLI();
 		cli.addRegItem(Key.LOCAL_AVAILABLE, true);
 		

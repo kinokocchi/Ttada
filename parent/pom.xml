@@ -24,10 +24,6 @@
 		<module>logintask</module>
 	</modules>
 
-
-
-
-    
 	<build>
 		<pluginManagement>
 			<plugins>

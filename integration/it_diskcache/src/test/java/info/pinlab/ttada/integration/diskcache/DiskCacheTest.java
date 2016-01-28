@@ -25,16 +25,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.log4j.BasicConfigurator;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DiskCacheTest {
-	public static Logger logger = Logger.getLogger(DiskCacheTest.class);
+	public static Logger LOG = LoggerFactory.getLogger(DiskCacheTest.class);
 	static SimpleJsonSerializer gson;
 	static DiskCache localCache;
 	static boolean isTmpDirCreated = false;
@@ -42,8 +42,6 @@ public class DiskCacheTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		BasicConfigurator.resetConfiguration();
-		BasicConfigurator.configure();
 		
 		//-- setup json Adapter --//
 		
@@ -66,12 +64,12 @@ public class DiskCacheTest {
 
 		final File dir = localCache.getRootDir();
 		if(isTmpDirCreated && dir.exists() && dir.isDirectory()){
-			logger.info("Deleting cache root '" + dir.getAbsolutePath());
+			LOG.info("Deleting cache root '" + dir.getAbsolutePath());
 			try{
 				FileStringTools.removeDir(dir);
 				isTmpDirCreated = false;
 			}catch(IOException e){
-				logger.error("Cannot delete cache dir '" + dir.getAbsolutePath() + "'");
+				LOG.error("Cannot delete cache dir '" + dir.getAbsolutePath() + "'");
 				isTmpDirCreated = true;
 			}
 		}
@@ -103,9 +101,9 @@ public class DiskCacheTest {
 		
 		for (File file : filesToDelete){
 			if(file.delete()){
-				logger.info("Remove test resource '" + file.getAbsolutePath() +"'");
+				LOG.info("Remove test resource '" + file.getAbsolutePath() +"'");
 			}else{
-				logger.warn("Couldn't remove test resource '" + file.getAbsolutePath() +"'");
+				LOG.warn("Couldn't remove test resource '" + file.getAbsolutePath() +"'");
 			}
 		}
 	}

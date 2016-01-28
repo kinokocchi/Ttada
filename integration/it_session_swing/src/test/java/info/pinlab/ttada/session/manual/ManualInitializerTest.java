@@ -6,8 +6,6 @@ import info.pinlab.ttada.session.Registry;
 import info.pinlab.ttada.session.Registry.Key;
 import info.pinlab.ttada.session.SessionFactory;
 
-import org.apache.log4j.BasicConfigurator;
-
 
 /**
  * 
@@ -27,8 +25,6 @@ public class ManualInitializerTest {
 	}
 	
 	public static void main(String [] args) throws Exception{
-		BasicConfigurator.configure();
-		
 		Registry conf = Registry.getDefaultInstance();
 		conf.put(Key.LOCAL_AVAILABLE, false);
 		conf.put(Key.REMOTE_AVAILABLE, false);

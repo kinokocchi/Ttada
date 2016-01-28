@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: info.pinlab.ttada.core.control.AbstractTaskControllerTest
--------------------------------------------------------------------------------
-Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.036 sec - in info.pinlab.ttada.core.control.AbstractTaskControllerTest

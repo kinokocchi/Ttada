@@ -15,7 +15,7 @@ import info.pinlab.pinsound.app.AudioPlayer;
 import info.pinlab.pinsound.app.AudioRecorder;
 import info.pinlab.snd.oal.OpenAlPlayer;
 import info.pinlab.snd.oal.OpenAlRecorder;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 
 public class AudioRecorderBarTest {
 	
@@ -38,7 +38,7 @@ public class AudioRecorderBarTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		PlayerTopPanel.setNimbusLF();
+		TopPanel.setNimbusLF();
 		if(IS_LWJGL_WORKING){
 			IF_LWJGL_IS_WORKING();
 		}

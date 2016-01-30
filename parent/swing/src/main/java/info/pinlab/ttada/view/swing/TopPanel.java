@@ -46,9 +46,9 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
+public class TopPanel implements 	PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
 										UserInteractionView, EnrollViewFactory{
-	public static Logger LOG = LoggerFactory.getLogger(PlayerTopPanel.class);
+	public static Logger LOG = LoggerFactory.getLogger(TopPanel.class);
 
 	private final JFrame frame;
 	private final Container contentPane;
@@ -106,7 +106,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 			fontMenu.addActionListener(this);
 			remoteMenu.addActionListener(this);
 
-			sndDialog = new JDialog(PlayerTopPanel.this.frame, "Sound settings", true);
+			sndDialog = new JDialog(TopPanel.this.frame, "Sound settings", true);
 			//TODO: audio
 //			sndDialog.getContentPane().add(audioDevicePanel);
 //			sndDialog.setSize(150,450);
@@ -157,7 +157,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 					frame_.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					frame_.setAlwaysOnTop(true);
 					//-- add focus and never release
-					frame_.addKeyListener(PlayerTopPanel.this);
+					frame_.addKeyListener(TopPanel.this);
 					frame_.setFocusTraversalKeysEnabled(false);
 					frame_.setAutoRequestFocus(true);
 					frame_.requestFocus();
@@ -168,7 +168,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 					contentPane_.setFocusTraversalKeysEnabled(false);
 					contentPane_.setFocusable(false);
 					
-					frame_.addWindowListener(PlayerTopPanel.this);
+					frame_.addWindowListener(TopPanel.this);
 					frame_.addMouseListener(new MouseClickListListener());
 //					frame_.addWindowFocusListener(PlayerTopPanel.this);
 
@@ -194,7 +194,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 	
 	
 	
-	public PlayerTopPanel(){
+	public TopPanel(){
 		//-- set nimbus on a non Swing thread 
 		setNimbusLF();
 
@@ -538,7 +538,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 			throw new IllegalStateException("The view must have frame!");
 		}
 		
-		PlayerTopPanel.runOnEdt(new Runnable() {
+		TopPanel.runOnEdt(new Runnable() {
 			@Override
 			public void run() {
 				frame.setVisible(isVisible);

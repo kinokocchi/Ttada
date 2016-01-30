@@ -3,12 +3,15 @@ package info.pinlab.ttada.view.swing;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +31,7 @@ import info.pinlab.ttada.core.model.ExtendedResource;
 import info.pinlab.ttada.core.model.display.AudioDisplay;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.display.FontProvider;
+import info.pinlab.ttada.core.model.display.IpaDisplay;
 import info.pinlab.ttada.core.model.display.TextDisplay;
 import info.pinlab.ttada.core.model.display.TextInputDisplay;
 import info.pinlab.ttada.core.model.task.Task;
@@ -55,6 +59,8 @@ public abstract class AbstractTaskPanel extends JPanel
 			implements TaskViewPanel, KeyListener{
 	public static Logger LOG = LoggerFactory.getLogger(AbstractTaskPanel.class);
 	
+	private static String ipaFontFileName = "DoulosSILCompact-R.ttf";
+	private static Font ipaFont = null;
 	
 	private GridBagConstraints gbcTop;
 	private GridBagConstraints gbcBottom ;
@@ -106,6 +112,27 @@ public abstract class AbstractTaskPanel extends JPanel
 	}
 	
 	
+	static public Font getIpaFont(){
+		if(ipaFont==null){
+			LOG.info("Loading IPA font");
+			InputStream is = AbstractTaskPanel.class.getResourceAsStream(ipaFontFileName);
+			if(is!=null){
+				try {
+					ipaFont = Font.createFont(Font.TRUETYPE_FONT, is);
+				} catch (FontFormatException e) {
+					LOG.error("Can't load font '" + ipaFontFileName +"': " + e.getMessage());
+					e.printStackTrace();
+				} catch (IOException e) {
+					LOG.error("Can't find font '" + ipaFontFileName +"': " + e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+		return ipaFont;
+	}
+	
+	
+	
 	@Override
 	public void setTaskController(TaskController controller){
 		taskController = controller;
@@ -135,6 +162,16 @@ public abstract class AbstractTaskPanel extends JPanel
 			GridBagConstraints gbc = GbcFactory.getFillBoth();
 			if(disp instanceof TextDisplay){
 				JLabel label = new JLabel(((TextDisplay)disp).getText());
+				
+				if(disp instanceof IpaDisplay){
+					Font ipa = getIpaFont();
+					if(ipa!=null){
+						ipa = ipa.deriveFont((float)((IpaDisplay)disp).getFontSize() );
+						label.setFont(ipa);
+					}else{
+					}
+				}
+
 				
 				if(disp instanceof FontProvider){
 					Font customFont = ((FontProvider)disp).getFont();

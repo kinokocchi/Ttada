@@ -63,7 +63,7 @@ public class Registry implements Iterable<Registry.Key> {
 		PLAYER_REPONSE_SAVE_DIR("info.pinlab.player.out.dir",			"responses"),
 		
 		PLAYER_TITLE(			"info.pinlab.player.title",				"PinPlayer"),
-		PLAYER_GUI_TOP_FQCN(    "info.pinlab.player.app.guitop",        "info.pinlab.ttada.view.swing.PlayerTopPanel"),
+		PLAYER_GUI_TOP_FQCN(    "info.pinlab.player.app.guitop",        "info.pinlab.ttada.view.swing.TopPanel"),
 		
 		
 		SOURCE_ENUM_BUNDLED( 	"info.pinlab.source.bundled",			"bundled"),	

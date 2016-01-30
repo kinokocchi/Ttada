@@ -124,7 +124,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 	@Override
 	public void setLogMsg(final String msg) {
 //		log = msg;
-		PlayerTopPanel.runOnEdt( new Runnable() {
+		TopPanel.runOnEdt( new Runnable() {
 			@Override
 			public void run(){
 				statusLabel.setText("# "+msg);
@@ -134,7 +134,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 
 	@Override
 	public void setStoreItemMax(final int n){
-		PlayerTopPanel.runOnEdt( new Runnable() {
+		TopPanel.runOnEdt( new Runnable() {
 			@Override
 			public void run() {
 				bar.setMaximum(n);
@@ -145,7 +145,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 
 	@Override
 	public void setStoredItemN(final int n) {
-		PlayerTopPanel.runOnEdt( new Runnable() {
+		TopPanel.runOnEdt( new Runnable() {
 			@Override
 			public void run() {
 				bar.setValue(n);
@@ -157,7 +157,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 
 	@Override
 	public void showMessage(final String msg) {
-		PlayerTopPanel.runOnEdt(new Runnable(){
+		TopPanel.runOnEdt(new Runnable(){
 			@Override
 			public void run() {
 				msgLabel.setText(msg);
@@ -168,7 +168,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 
 	@Override
 	public void showWarning(final String warn) {
-		PlayerTopPanel.runOnEdt(new Runnable() {
+		TopPanel.runOnEdt(new Runnable() {
 			@Override
 			public void run() {
 				msgLabel.setText(warn);
@@ -181,7 +181,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 
 	@Override
 	public void showError(final String err) {
-		PlayerTopPanel.runOnEdt(new Runnable() {
+		TopPanel.runOnEdt(new Runnable() {
 			@Override
 			public void run() {
 				msgLabel.setText(err);
@@ -272,7 +272,7 @@ public class EnrollViewPanel extends JPanel implements EnrollView, HasPanel {
 	
 	@Override
 	synchronized public void setState(final State state) {
-		PlayerTopPanel.runOnEdt(new Runnable() {
+		TopPanel.runOnEdt(new Runnable() {
 			@Override
 			public void run() {
 				switch (state) {

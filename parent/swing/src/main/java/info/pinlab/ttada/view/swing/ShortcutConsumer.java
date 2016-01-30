@@ -5,7 +5,7 @@ import java.awt.event.KeyListener;
 import java.util.Set;
 
 /**
- * Shortcuts captured by {@link PlayerTopPanel} (except for EntryTask). <br> 
+ * Shortcuts captured by {@link TopPanel} (except for EntryTask). <br> 
  * Child widgets can delegate their shortcut through this interface.
  * 
  * @author Gabor Pinter

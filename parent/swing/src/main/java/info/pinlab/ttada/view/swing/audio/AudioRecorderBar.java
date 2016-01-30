@@ -163,6 +163,11 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 	public void doToggleRecBtn(){
 		recBtn.doClick();
 	}
+	public void doTogglePlayBtn(){
+		playBtn.doClick();
+	}
+	
+	
 	
 	@Override
 	public void setRecActionListener(AudioRecorderListener l) {

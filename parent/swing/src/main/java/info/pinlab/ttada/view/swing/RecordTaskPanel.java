@@ -24,14 +24,16 @@ public class RecordTaskPanel extends AbstractTaskPanel
 
 	
 	static{
-		shortcuts.add(KeyEvent.VK_SPACE);
+		shortcuts.add(KeyEvent.VK_SPACE); //-- play audio
+		shortcuts.add(KeyEvent.VK_SPACE|KeyEvent.CTRL_DOWN_MASK); //-- record audio
 	}
+	
+	
+	
 	
 	public RecordTaskPanel (){
 		super();
-		
 		recBar = new AudioRecorderBar();
-		
 		super.setBottomPanel(recBar);
 //		modelViewMap.put(, this);
 	}
@@ -159,13 +161,26 @@ public class RecordTaskPanel extends AbstractTaskPanel
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+		int keyCode = e.getKeyCode() | e.getModifiersEx();
+		
+		switch (keyCode) {
+		case KeyEvent.VK_SPACE|KeyEvent.CTRL_DOWN_MASK:
 			recBar.doToggleRecBtn();
+			break;
+		case KeyEvent.VK_SPACE:
+			if(this.taskController.getAttemptN()>0){
+				recBar.doTogglePlayBtn();
+			}else{
+				recBar.doToggleRecBtn();
+			}
+			break;
+		default:
+			break;
 		}
 	}
 
 	@Override
-	public Set<Integer> getShortcutKeys() {
+	public Set<Integer> getShortcutKeys(){
 		return shortcuts;
 	}
 }

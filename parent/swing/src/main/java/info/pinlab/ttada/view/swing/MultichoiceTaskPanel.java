@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import info.pinlab.ttada.core.model.MultichoiceTask;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.display.FontProvider;
+import info.pinlab.ttada.core.model.display.IpaDisplay;
 import info.pinlab.ttada.core.model.display.TextDisplay;
 import info.pinlab.ttada.core.model.response.Response;
 import info.pinlab.ttada.core.model.response.ResponseContent;
@@ -84,10 +85,20 @@ public class MultichoiceTaskPanel extends AbstractTaskPanel
 	
 	static RespButton getRespBtn (Display disp){
 		RespButton btn = new RespButton(disp);
+		
 		if(disp instanceof TextDisplay){
 			String label = ((TextDisplay)disp).getText();
 			btn.setText(label);
+			if(disp instanceof IpaDisplay){
+				Font font = AbstractTaskPanel.getIpaFont();
+				if(font!=null){
+					font = font.deriveFont((float)((IpaDisplay)disp).getFontSize() );
+					btn.setFont(font);
+				}
+			}
 		}
+		
+		
 		if(disp instanceof FontProvider){
 			Font font = ((FontProvider) disp).getFont();
 			if(font==null){

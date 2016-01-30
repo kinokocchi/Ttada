@@ -5,12 +5,12 @@ import info.pinlab.ttada.core.model.task.SurveyTask;
 import info.pinlab.ttada.core.model.task.TaskSet;
 import info.pinlab.ttada.session.Registry.Key;
 import info.pinlab.ttada.session.app.CLI;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 
 public class ManualSurveyTaskPanelTest {
 
 	public static void main(String[] args) {
-		PlayerTopPanel.setNimbusLF();
+		TopPanel.setNimbusLF();
 		
 		SurveyTask task = new SurveyTask();
 		task.addDisplay("<html><h1>We need info!</h1></html>");

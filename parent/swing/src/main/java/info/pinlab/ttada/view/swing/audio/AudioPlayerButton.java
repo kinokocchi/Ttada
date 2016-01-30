@@ -15,7 +15,7 @@ import javax.swing.SwingUtilities;
 import info.pinlab.pinsound.app.AudioPlayer;
 import info.pinlab.pinsound.app.AudioPlayerListener;
 import info.pinlab.pinsound.app.AudioPlayerView;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 import info.pinlab.ttada.view.swing.ResourceLoader;
 import info.pinlab.ttada.view.swing.ResourceLoader.IconType;
 import info.pinlab.ttada.view.swing.ShortcutConsumer;
@@ -96,7 +96,7 @@ public class AudioPlayerButton extends JToggleButton
 	}
 	
 	public static void main(String[ ]args) throws Exception{
-		PlayerTopPanel.setNimbusLF();
+		TopPanel.setNimbusLF();
 		final AudioPlayerButton btn = new AudioPlayerButton();
 		AudioPlayer player = new AudioPlayer();
 //		player.setPlayerDevice(playerDev);

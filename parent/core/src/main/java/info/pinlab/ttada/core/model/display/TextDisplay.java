@@ -7,6 +7,7 @@ import java.awt.Font;
 public class TextDisplay extends AbstractDisplay {
 	private final String text;
 	private Font font = null;
+	private int fontSz = 10;
 	
 	public TextDisplay(String text){
 		if(text==null){
@@ -45,6 +46,13 @@ public class TextDisplay extends AbstractDisplay {
 	
 	public Font getFont(){
 		return font;
+	}
+	
+	public void setFontSize(int sz){
+		this.fontSz = sz;
+	}
+	public int getFontSize(){
+		return fontSz;
 	}
 	
 	

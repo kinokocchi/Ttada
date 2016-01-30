@@ -2,7 +2,7 @@ package info.pinlab.ttada.view.swing.manual;
 
 import info.pinlab.ttada.core.model.task.InfoTask;
 import info.pinlab.ttada.core.model.task.Task;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 
 
 /**
@@ -14,7 +14,7 @@ import info.pinlab.ttada.view.swing.PlayerTopPanel;
 public class ManualMinimalWindowTest {
 
 	public static void main(String[] args) {
-		PlayerTopPanel panel = new PlayerTopPanel();
+		TopPanel panel = new TopPanel();
 		panel.setLabel("Minimal test");
 		
 		Task task = new InfoTask("The simplest demo!"); 

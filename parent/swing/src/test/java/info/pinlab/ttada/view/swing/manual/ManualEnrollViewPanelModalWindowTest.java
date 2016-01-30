@@ -10,7 +10,7 @@ import info.pinlab.ttada.core.model.task.TaskSet;
 import info.pinlab.ttada.core.ser.SimpleJsonSerializer;
 import info.pinlab.ttada.gson.SimpleGsonSerializerFactory;
 import info.pinlab.ttada.session.SessionImpl;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 
 
 public class ManualEnrollViewPanelModalWindowTest {
@@ -31,8 +31,8 @@ public class ManualEnrollViewPanelModalWindowTest {
 		SessionController session = new SessionImpl();
 		session.setTaskSet(getDummyTasks());
 
-		PlayerTopPanel.setNimbusLF();
-		PlayerTopPanel top = new PlayerTopPanel();
+		TopPanel.setNimbusLF();
+		TopPanel top = new TopPanel();
 		session.setEnrollViewFactory(top);
 		
 

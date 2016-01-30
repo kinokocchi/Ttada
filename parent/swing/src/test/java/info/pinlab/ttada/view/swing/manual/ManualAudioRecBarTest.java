@@ -11,7 +11,7 @@ import info.pinlab.pinsound.app.AudioRecorderListener;
 import info.pinlab.pinsound.app.AudioRecorderView;
 import info.pinlab.snd.oal.OpenAlPlayer;
 import info.pinlab.snd.oal.OpenAlRecorder;
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.TopPanel;
 import info.pinlab.ttada.view.swing.audio.AudioRecorderBar;
 
 
@@ -116,7 +116,7 @@ public class ManualAudioRecBarTest {
 	
 	
 	public static void main(String [] args) throws Exception{
-		PlayerTopPanel.setNimbusLF();
+		TopPanel.setNimbusLF();
 
 		final AudioRecorderBar bar = new AudioRecorderBar();
 		setRealRecorder(bar);

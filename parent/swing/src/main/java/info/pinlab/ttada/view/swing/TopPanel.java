@@ -1,17 +1,6 @@
 package info.pinlab.ttada.view.swing;
 
 
-import info.pinlab.ttada.core.control.EnrollReqListener;
-import info.pinlab.ttada.core.control.SessionController;
-import info.pinlab.ttada.core.model.response.Response;
-import info.pinlab.ttada.core.model.task.Task;
-import info.pinlab.ttada.core.view.EnrollView;
-import info.pinlab.ttada.core.view.EnrollViewFactory;
-import info.pinlab.ttada.core.view.NavigatorView;
-import info.pinlab.ttada.core.view.PlayerTopView;
-import info.pinlab.ttada.core.view.TaskView;
-import info.pinlab.ttada.core.view.UserInteractionView;
-
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridBagConstraints;
@@ -32,6 +21,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -46,7 +36,18 @@ import javax.swing.UIManager.LookAndFeelInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TopPanel implements 	PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
+import info.pinlab.ttada.core.control.EnrollReqListener;
+import info.pinlab.ttada.core.control.SessionController;
+import info.pinlab.ttada.core.model.response.Response;
+import info.pinlab.ttada.core.model.task.Task;
+import info.pinlab.ttada.core.view.EnrollView;
+import info.pinlab.ttada.core.view.EnrollViewFactory;
+import info.pinlab.ttada.core.view.NavigatorView;
+import info.pinlab.ttada.core.view.PlayerTopView;
+import info.pinlab.ttada.core.view.TaskView;
+import info.pinlab.ttada.core.view.UserInteractionView;
+
+public class TopPanel implements PlayerTopView, WindowListener, WindowFocusListener, KeyListener, 
 										UserInteractionView, EnrollViewFactory{
 	public static Logger LOG = LoggerFactory.getLogger(TopPanel.class);
 
@@ -269,6 +270,16 @@ public class TopPanel implements 	PlayerTopView, WindowListener, WindowFocusList
 	}
 	
 	
+	private void registerShortcuts(Object obj){
+		if(obj instanceof ShortcutConsumer){
+			ShortcutConsumer shortcutConsumer = (ShortcutConsumer)obj;
+			Set<Integer> keys = shortcutConsumer.getShortcutKeys();
+			if(keys!=null)
+			for(Integer shortcut : keys){
+				shortcutListenerMapForComponents.put(shortcut, shortcutConsumer);
+			}
+		}
+	}
 	
 	
 	@Override
@@ -284,19 +295,9 @@ public class TopPanel implements 	PlayerTopView, WindowListener, WindowFocusList
 		
 		//-- reset shortcuts
 		shortcutListenerMapForComponents.clear();
-		if(view instanceof ShortcutConsumer){
-			ShortcutConsumer shortcutConsumer = (ShortcutConsumer)view;
-			for(Integer shortcut : shortcutConsumer.getShortcutKeys()){
-				shortcutListenerMapForComponents.put(shortcut, shortcutConsumer);
-			}
-		}
+		registerShortcuts(view);
 		for(Object obj :view.getModelViewMap().values()){
-			if(obj instanceof ShortcutConsumer){
-				ShortcutConsumer shortcutConsumer = (ShortcutConsumer)obj;
-				for(Integer key: shortcutConsumer.getShortcutKeys()){
-					shortcutListenerMapForComponents.put(key, shortcutConsumer);
-				}
-			}
+			registerShortcuts(obj);
 		}
 		
 		SwingUtilities.invokeLater(new Runnable() {

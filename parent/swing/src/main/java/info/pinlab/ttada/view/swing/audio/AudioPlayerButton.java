@@ -34,6 +34,8 @@ public class AudioPlayerButton extends JToggleButton
 		playIcon = ResourceLoader.getIcon(IconType.PLAY, 48);
 		pauseIcon = ResourceLoader.getIcon(IconType.PAUSE, 48);
 		shortcuts.add(KeyEvent.VK_SPACE);
+		shortcuts.add(KeyEvent.CTRL_DOWN_MASK|KeyEvent.VK_SPACE);
+		shortcuts.add(KeyEvent.META_DOWN_MASK|KeyEvent.VK_SPACE);
 	}
 	
 	
@@ -122,7 +124,11 @@ public class AudioPlayerButton extends JToggleButton
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		if(e.getKeyCode()==KeyEvent.VK_SPACE){
+		int keyCode = e.getKeyCode()|e.getModifiersEx(); 
+		if(keyCode==KeyEvent.VK_SPACE
+			|| keyCode==(KeyEvent.CTRL_DOWN_MASK|KeyEvent.VK_SPACE)
+			|| keyCode==(KeyEvent.META_DOWN_MASK|KeyEvent.VK_SPACE)
+			){
 			this.doClick();
 		}
 	}

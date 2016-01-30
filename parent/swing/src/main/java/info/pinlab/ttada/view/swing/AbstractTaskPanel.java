@@ -2,6 +2,7 @@ package info.pinlab.ttada.view.swing;
 
 
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
@@ -16,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -95,6 +97,19 @@ public abstract class AbstractTaskPanel extends JPanel
 	
 	public void setTopPanel(Component panel){
 		this.add(panel, gbcTop);
+	}
+	
+	
+	
+	public JFrame getTopFrame(Container comp){
+		if(comp==null){
+			return null;
+		}
+		if(comp instanceof JFrame){
+			return (JFrame)comp;
+		}else{
+			return getTopFrame(comp.getParent());
+		}
 	}
 		
 

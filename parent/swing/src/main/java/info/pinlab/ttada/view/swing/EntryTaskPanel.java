@@ -5,9 +5,12 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -109,20 +112,22 @@ public class EntryTaskPanel extends AbstractTaskPanel
 
 	@Override
 	public Set<Integer> getShortcutKeys() {
-		return new TopNavigationPanel().getShortcutKeys();
+		return null;
 	}
 
+	long dispatchedKey = 0;
+	
 	@Override
 	public void keyPressed(KeyEvent key){
-		long when = System.currentTimeMillis();
-		int keyCode = key.getKeyCode() | key.getModifiersEx();
-		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_RIGHT)){
-//			super.taskController.reqNextByUsr();
-			ActionEvent e = new ActionEvent(key, 0, null, when, 0);
-			actionPerformed(e);
-		}
-		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_LEFT)){
-			super.taskController.reqPrevByUsr();
+		//-- percolate only ALT or CTRL-ed keys
+		if(key.isAltDown() || key.isControlDown() || key.isMetaDown()){
+			if(key.getWhen() == dispatchedKey) //-- avoid looping
+				return;
+			JFrame frame = super.getTopFrame(this);
+			if(frame != null){
+				dispatchedKey = key.getWhen();
+				frame.dispatchEvent(key);
+			}
 		}
 	}
 

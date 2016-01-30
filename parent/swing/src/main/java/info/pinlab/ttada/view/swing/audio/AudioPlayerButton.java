@@ -32,11 +32,12 @@ public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
 	private AudioPlayerListener listener = null;
 	
 	public AudioPlayerButton(){
+		setFocusable(false);
 		setIcon(playIcon);
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e){
-				System.out.println("PUSHED " + listener);
+//				System.out.println("PUSHED " + listener);
 				if(listener!=null){
 					listener.reqPauseToggle();
 				}

@@ -1,23 +1,34 @@
 package info.pinlab.ttada.view.swing;
 
 
-import info.pinlab.ttada.core.control.TaskController;
-import info.pinlab.ttada.core.model.response.Response;
-import info.pinlab.ttada.core.model.response.ResponseContent;
-import info.pinlab.ttada.core.model.response.ResponseContentEmpty;
-
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import info.pinlab.ttada.core.control.TaskController;
+import info.pinlab.ttada.core.model.response.Response;
+import info.pinlab.ttada.core.model.response.ResponseContent;
+import info.pinlab.ttada.core.model.response.ResponseContentEmpty;
+
 @SuppressWarnings("serial")
-public class InfoTaskPanel extends AbstractTaskPanel {
+public class InfoTaskPanel extends AbstractTaskPanel 
+			implements ShortcutConsumer{
+	
 	JButton okButton;
+	private static final Set<Integer> shortcuts = new HashSet<Integer>();
+
+	static{
+		shortcuts.add(KeyEvent.VK_ENTER);
+	}
+	
 	
 	public InfoTaskPanel(){
 		super();
@@ -42,6 +53,11 @@ public class InfoTaskPanel extends AbstractTaskPanel {
 			}
 		});
 		super.setBottomPanel(panel);
+
+//		okButton.setFocusable(false);
+		//-- set focus (and not let out!)
+//		okButton.setFocusTraversalKeysEnabled(false);
+//		super.setDefaultFocus(okButton);
 	}
 
 	@Override
@@ -59,6 +75,27 @@ public class InfoTaskPanel extends AbstractTaskPanel {
 	@Override
 	public void setEnabled(boolean b) {
 		okButton.setEnabled(b);
+	}
+
+	@Override
+	public void keyPressed(KeyEvent key) {
+		int keyCode = key.getKeyCode() | key.getModifiersEx();
+		if(keyCode == KeyEvent.VK_ENTER){
+			okButton.doClick();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent key) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent key){
+	}
+
+	@Override
+	public Set<Integer> getShortcutKeys() {
+		return shortcuts;
 	}
 
 

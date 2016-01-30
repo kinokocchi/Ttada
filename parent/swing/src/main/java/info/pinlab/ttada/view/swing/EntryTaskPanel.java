@@ -66,7 +66,7 @@ public class EntryTaskPanel extends AbstractTaskPanel
 			}
 		}).start();
 
-		//-- set focus (not let out!)
+		//-- set focus (and not let out!)
 		txtResp.setFocusTraversalKeysEnabled(false);
 		super.setDefaultFocus(txtResp);
 	}

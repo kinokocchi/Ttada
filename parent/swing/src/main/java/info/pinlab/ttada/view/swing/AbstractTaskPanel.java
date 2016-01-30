@@ -79,6 +79,8 @@ public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel 
 //		addComponentListener(this);
 		
 		setFocusTraversalKeysEnabled(false);
+		//-- keep focus on top component
+		setFocusable(false);
 	}
 	
 	public void setTopPanel(Component panel){

@@ -21,6 +21,7 @@ public class ManualInitializerTest {
 	private static TaskSet initTaskSet(){
 		TaskSet tset  = new TaskSet();
 		tset.add(new InfoTask("ManualInitializer Test"));
+		tset.add(new InfoTask("second slide"));
 		return tset;
 	}
 	

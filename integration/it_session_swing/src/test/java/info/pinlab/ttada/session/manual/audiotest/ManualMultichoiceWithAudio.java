@@ -1,9 +1,6 @@
 package info.pinlab.ttada.session.manual.audiotest;
 
-import java.io.IOException;
 import java.io.InputStream;
-
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import info.pinlab.pinsound.WavClip;
 import info.pinlab.ttada.core.model.MultichoiceTask;
@@ -19,22 +16,16 @@ import info.pinlab.ttada.session.app.CLI;
 public class ManualMultichoiceWithAudio {
 
 	
-	
 	public static TaskSet getTaskSet () throws Exception{
 		TaskSet tset = new TaskSet();
 
 		WavClip wav1 =null;
-		InputStream is  = ManualTestWithAudio.class.getClass().getResourceAsStream("sample.wav");
+		String audioFile = "delilah.wav";
+		InputStream is  = ManualTestWithAudio.class.getClass().getResourceAsStream(audioFile);
 		if(is==null){
-			is = ManualTestWithAudio.class.getResourceAsStream("sample.wav");
+			is = ManualTestWithAudio.class.getResourceAsStream(audioFile);
 		}
-		try {
-			wav1 = new WavClip(is);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (UnsupportedAudioFileException e) {
-			e.printStackTrace();
-		}
+		wav1 = new WavClip(is);
 		
 		AudioRule arule = new AudioRuleBuilder().setDelay(0).build();
 		StepRule srule  = new StepRuleBuilder().setNextByResp(true).build();
@@ -43,13 +34,13 @@ public class ManualMultichoiceWithAudio {
 			MultichoiceTask mtask = new MultichoiceTask();
 			mtask.setStepRule(srule);
 			mtask.addChoice("A").addChoice("B").addChoice("C");
+			mtask.setRowN(3);
 			
 			AudioDisplay disp = new AudioDisplay(wav1);
 			disp.setAudioRule( arule);
 			mtask.addDisplay(disp);
 			tset.add(mtask);
 		}		
-
 //		RecordTask rtask  = new RecordTask();
 //		rtask.addDisplay("This is a record task");
 //		rtask.addDisplay(new AudioDisplay(wav1));

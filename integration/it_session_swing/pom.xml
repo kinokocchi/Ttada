@@ -64,6 +64,11 @@
 			<artifactId>session</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>info.pinlab.ttada</groupId>
+			<artifactId>entrytask</artifactId>
+			<version>0.1</version>
+		</dependency>
   	</dependencies>
   
 </project>

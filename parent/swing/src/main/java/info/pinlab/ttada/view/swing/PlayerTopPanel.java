@@ -54,7 +54,9 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 	private final Container contentPane;
 	final Map<EnrollView, JFrame> enrollViewFrames = new HashMap<EnrollView, JFrame>();  
 
-	
+	final Map<Integer, KeyListener> shortcutListenerMapForComponents = new HashMap<Integer, KeyListener>();
+	final Map<Integer, KeyListener> shortcutListenerMapForTop = new HashMap<Integer, KeyListener>();
+
 	private final TopNavigationPanel naviPanel ;
 	private final GridBagConstraints dispPanelGBC;
 	
@@ -154,12 +156,21 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 					frame_ = new JFrame();
 					frame_.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 					frame_.setAlwaysOnTop(true);
+					//-- add focus and never release
+					frame_.addKeyListener(PlayerTopPanel.this);
+					frame_.setFocusable(true);
+					frame_.setFocusTraversalKeysEnabled(false);
+					frame_.setAutoRequestFocus(true);
+					//-- populate:
 					contentPane_ =  frame_.getContentPane();
 					contentPane_.setLayout(new GridBagLayout());
-
+					
+					contentPane_.setFocusTraversalKeysEnabled(false);
+					contentPane_.setFocusable(false);
+					
 					frame_.addWindowListener(PlayerTopPanel.this);
 					frame_.addMouseListener(new MouseClickListListener());
-					frame_.addWindowFocusListener(PlayerTopPanel.this);
+//					frame_.addWindowFocusListener(PlayerTopPanel.this);
 
 					naviPanel_ = new TopNavigationPanel();
 					GridBagConstraints gbc = GbcFactory.getRow();
@@ -187,6 +198,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 		//-- set nimbus on a non Swing thread 
 		setNimbusLF();
 
+		
 		//-- start gui on Swing thread! 
 		InitGuiComonentsOnEDT comp = null;
 		try {
@@ -200,10 +212,17 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 		this.frame = comp.frame_;
 		this.contentPane = comp.contentPane_;
 		this.naviPanel = comp.naviPanel_;
+	
+		for(Integer shortcut: naviPanel.getShortcutKeys()){
+			shortcutListenerMapForTop.put(shortcut, naviPanel);
+		}
+		
 		this.dispPanelGBC = comp.dispPanelGBC_;
-
 	}
 
+	
+	
+	
 
 	@Override
 	public void setTaskWindowVisible(boolean b){
@@ -262,6 +281,17 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				throw new IllegalArgumentException("Not a TaskViewPanel in setter! '" + view.getClass() + "' can't be set for panel!");
 			}
 		}
+		
+		//-- reset shortcuts
+		shortcutListenerMapForComponents.clear();
+		if(view instanceof ShortcutConsumer){
+			ShortcutConsumer shortcutConsumer = (ShortcutConsumer)view;
+			for(Integer shortcut : shortcutConsumer.getShortcutKeys()){
+				shortcutListenerMapForComponents.put(shortcut, shortcutConsumer);
+			}
+		}
+		
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -406,6 +436,8 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 
 	@Override
 	public void dispose(){
+		shortcutListenerMapForComponents.clear();
+		shortcutListenerMapForTop.clear();
 		SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
@@ -547,24 +579,58 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 	}
 
 
+
+	
 	@Override
-	public void keyPressed(KeyEvent arg0) {
-		System.out.println("TOP Key pressed :" + arg0);
-		
+	public void keyPressed(KeyEvent key) { 
+		int keyCode = key.getKeyCode() | key.getModifiersEx();
+		//-- 1st round: child components
+		KeyListener listener = shortcutListenerMapForComponents.get(keyCode);
+		if(listener!=null){
+			listener.keyPressed(key);
+			//-- 2nd round: top components
+		}else{		
+			listener = shortcutListenerMapForTop.get(keyCode);
+			if(listener!=null){
+				listener.keyPressed(key);
+			}else{
+				//-- not delegating...
+			}
+		}
 	}
-
-
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent key) {
+		int keyCode = key.getKeyCode() | key.getModifiersEx();
+		//-- 1st round: child components
+		KeyListener listener = shortcutListenerMapForComponents.get(keyCode);
+		if(listener!=null){
+			listener.keyReleased(key);
+			//-- 2nd round: top components
+		}else{		
+			listener = shortcutListenerMapForTop.get(keyCode);
+			if(listener!=null){
+				listener.keyReleased(key);
+			}else{
+				//-- not delegating...
+			}
+		}
 	}
-
-
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyTyped(KeyEvent key) {
+		int keyCode = key.getKeyCode() | key.getModifiersEx();
+		//-- 1st round: child components
+		KeyListener listener = shortcutListenerMapForComponents.get(keyCode);
+		if(listener!=null){
+			listener.keyTyped(key);
+			//-- 2nd round: top components
+		}else{		
+			listener = shortcutListenerMapForTop.get(keyCode);
+			if(listener!=null){
+				listener.keyTyped(key);
+			}else{
+				//-- not delegating...
+			}
+		}
 	}
 }
 

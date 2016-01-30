@@ -23,7 +23,8 @@ public class InfoTaskPanel extends AbstractTaskPanel
 			implements ShortcutConsumer{
 	
 	JButton okButton;
-	private static final Set<Integer> shortcuts = new HashSet<Integer>();
+//	private static final Set<Integer> shortcuts = new HashSet<Integer>();
+	protected static Set<Integer> shortcuts = new HashSet<Integer>();
 
 	static{
 		shortcuts.add(KeyEvent.VK_ENTER);
@@ -54,9 +55,12 @@ public class InfoTaskPanel extends AbstractTaskPanel
 		});
 		super.setBottomPanel(panel);
 
-//		okButton.setFocusable(false);
+		this.setFocusable(false);
+		this.setFocusTraversalKeysEnabled(false);
+		okButton.setFocusable(false);
+		okButton.setFocusTraversalKeysEnabled(false);
+		
 		//-- set focus (and not let out!)
-//		okButton.setFocusTraversalKeysEnabled(false);
 //		super.setDefaultFocus(okButton);
 	}
 
@@ -97,6 +101,4 @@ public class InfoTaskPanel extends AbstractTaskPanel
 	public Set<Integer> getShortcutKeys() {
 		return shortcuts;
 	}
-
-
 }

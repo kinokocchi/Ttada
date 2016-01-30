@@ -1,21 +1,31 @@
 package info.pinlab.ttada.view.swing;
 
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
+
+import info.pinlab.pinsound.WavClip;
+import info.pinlab.pinsound.app.AudioPlayerListener;
+import info.pinlab.pinsound.app.AudioRecorderListener;
 import info.pinlab.ttada.core.control.TaskController;
 import info.pinlab.ttada.core.model.response.Response;
 import info.pinlab.ttada.core.model.response.ResponseContent;
 import info.pinlab.ttada.core.model.response.ResponseContentAudio;
 import info.pinlab.ttada.core.view.RecordTaskView;
 import info.pinlab.ttada.view.swing.audio.AudioRecorderBar;
-import info.pinlab.pinsound.WavClip;
-import info.pinlab.pinsound.app.AudioPlayerListener;
-import info.pinlab.pinsound.app.AudioRecorderListener;
 
-public class RecordTaskPanel extends AbstractTaskPanel implements RecordTaskView{
+public class RecordTaskPanel extends AbstractTaskPanel 
+ 		implements RecordTaskView, ShortcutConsumer{
 	private static final long serialVersionUID = -6428138207174096890L;
 	
 	private AudioRecorderBar recBar;
 //	private RecordTaskController recTaskController = null;
+	protected static Set<Integer> shortcuts = new HashSet<Integer>();
+
 	
+	static{
+		shortcuts.add(KeyEvent.VK_SPACE);
+	}
 	
 	public RecordTaskPanel (){
 		super();
@@ -143,7 +153,19 @@ public class RecordTaskPanel extends AbstractTaskPanel implements RecordTaskView
 
 	@Override
 	public void setReadyToPlayState() {
+		//-- shortcut: SPACE to toggle recording
 		recBar.setReadyToPlayState();
 	}
-	
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode() == KeyEvent.VK_SPACE){
+			recBar.doToggleRecBtn();
+		}
+	}
+
+	@Override
+	public Set<Integer> getShortcutKeys() {
+		return shortcuts;
+	}
 }

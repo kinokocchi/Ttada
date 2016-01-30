@@ -158,13 +158,13 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 					frame_.setAlwaysOnTop(true);
 					//-- add focus and never release
 					frame_.addKeyListener(PlayerTopPanel.this);
-					frame_.setFocusable(true);
 					frame_.setFocusTraversalKeysEnabled(false);
 					frame_.setAutoRequestFocus(true);
+					frame_.requestFocus();
 					//-- populate:
 					contentPane_ =  frame_.getContentPane();
 					contentPane_.setLayout(new GridBagLayout());
-					
+
 					contentPane_.setFocusTraversalKeysEnabled(false);
 					contentPane_.setFocusable(false);
 					
@@ -290,7 +290,14 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				shortcutListenerMapForComponents.put(shortcut, shortcutConsumer);
 			}
 		}
-		
+		for(Object obj :view.getModelViewMap().values()){
+			if(obj instanceof ShortcutConsumer){
+				ShortcutConsumer shortcutConsumer = (ShortcutConsumer)obj;
+				for(Integer key: shortcutConsumer.getShortcutKeys()){
+					shortcutListenerMapForComponents.put(key, shortcutConsumer);
+				}
+			}
+		}
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -299,6 +306,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				contentPane.add(((TaskViewPanel)view).getPanel(), dispPanelGBC);
 				contentPane.validate();
 				contentPane.repaint();
+				frame.requestFocus();
 			}
 		});
 	}
@@ -316,6 +324,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 		
 		ViewSetter(Task task){
 			this.task = task;
+			
 			String panelName = this.getClass().getPackage().getName()
 					+ "." 
 					+task.getClass().getSimpleName() + "Panel";
@@ -582,7 +591,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 
 	
 	@Override
-	public void keyPressed(KeyEvent key) { 
+	public void keyPressed(KeyEvent key){
 		int keyCode = key.getKeyCode() | key.getModifiersEx();
 		//-- 1st round: child components
 		KeyListener listener = shortcutListenerMapForComponents.get(keyCode);
@@ -595,6 +604,7 @@ public class PlayerTopPanel implements 	PlayerTopView, WindowListener, WindowFoc
 				listener.keyPressed(key);
 			}else{
 				//-- not delegating...
+//				System.out.println("Not delegate " + key);
 			}
 		}
 	}

@@ -11,6 +11,8 @@ public class ManualStepTestWithShortcut {
 	public static void main(String[] args) {
 		
 		TaskSet tset = new TaskSet();
+		
+		tset.add(new InfoTask("Before entry"));
 		tset.add(new EntryTask());
 		tset.add(new InfoTask("1 after entry"));
 		tset.add(new InfoTask("2 after entry"));

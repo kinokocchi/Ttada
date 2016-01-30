@@ -29,6 +29,7 @@ public class TopNavigationPanel extends JPanel implements NavigatorView, HasPane
 	{
 		shortcuts.add(KeyEvent.ALT_DOWN_MASK|KeyEvent.VK_RIGHT);
 		shortcuts.add(KeyEvent.ALT_DOWN_MASK|KeyEvent.VK_LEFT);
+		shortcuts.add(KeyEvent.VK_ENTER);
 	}
 	
 	public TopNavigationPanel(){
@@ -119,7 +120,8 @@ public class TopNavigationPanel extends JPanel implements NavigatorView, HasPane
 	@Override
 	public void keyPressed(KeyEvent key) {
 		int keyCode = key.getKeyCode() | key.getModifiersEx();
-		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_RIGHT)){
+		if(	   keyCode == KeyEvent.VK_ENTER
+			|| keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_RIGHT)){
 			rightBtn.doClick();
 		}
 		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_LEFT)){
@@ -127,13 +129,9 @@ public class TopNavigationPanel extends JPanel implements NavigatorView, HasPane
 		}
 	}
 
+	
 	@Override
-	public void keyReleased(KeyEvent e) {
-		System.out.println("Released + " + e);
-	}
-
+	public void keyReleased(KeyEvent ignore) {}
 	@Override
-	public void keyTyped(KeyEvent e) {
-		System.out.println("Typed + " + e);
-	}
+	public void keyTyped(KeyEvent ignore) {	}
 }

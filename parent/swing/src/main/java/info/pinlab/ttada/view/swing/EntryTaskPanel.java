@@ -4,6 +4,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -17,7 +19,7 @@ import info.pinlab.ttada.core.model.response.ResponseContentText;
 
 @SuppressWarnings("serial")
 public class EntryTaskPanel extends AbstractTaskPanel
-							implements ActionListener{
+							implements ActionListener, ShortcutConsumer{
 	private final JTextField txtResp ;
 	private final JButton btn;
 	private final JPanel respPanel; 
@@ -59,6 +61,7 @@ public class EntryTaskPanel extends AbstractTaskPanel
 			}
 		});
 		super.setBottomPanel(respPanel);
+		
 		new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -66,6 +69,9 @@ public class EntryTaskPanel extends AbstractTaskPanel
 			}
 		}).start();
 
+
+		txtResp.addKeyListener(this);
+		
 		//-- set focus (and not let out!)
 		txtResp.setFocusTraversalKeysEnabled(false);
 		super.setDefaultFocus(txtResp);
@@ -94,15 +100,37 @@ public class EntryTaskPanel extends AbstractTaskPanel
 	@Override
 	public void actionPerformed(ActionEvent e){
 		long t1 = e.getWhen();
-		
 		responseContent = new ResponseContentText(t1, t1-displayT, txtResp.getText(), txtResp.getText());
-
 		if(super.taskController!=null){
 			super.taskController.enrollResponse(responseContent);
 		}
-		System.out.println(responseContent);
 	}
-	
-	
-	
+
+
+	@Override
+	public Set<Integer> getShortcutKeys() {
+		return new TopNavigationPanel().getShortcutKeys();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent key){
+		long when = System.currentTimeMillis();
+		int keyCode = key.getKeyCode() | key.getModifiersEx();
+		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_RIGHT)){
+//			super.taskController.reqNextByUsr();
+			ActionEvent e = new ActionEvent(key, 0, null, when, 0);
+			actionPerformed(e);
+		}
+		if(keyCode == ( KeyEvent.ALT_DOWN_MASK | KeyEvent.VK_LEFT)){
+			super.taskController.reqPrevByUsr();
+		}
+	}
+
+
+
+
+	@Override
+	public void keyReleased(KeyEvent ignore) {	}
+	@Override
+	public void keyTyped(KeyEvent ignore){	}
 }

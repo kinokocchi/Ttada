@@ -2,6 +2,7 @@ package info.pinlab.ttada.view.swing.audio;
 
 import info.pinlab.ttada.view.swing.GbcFactory;
 import info.pinlab.ttada.view.swing.ResourceLoader;
+import info.pinlab.ttada.view.swing.ShortcutConsumer;
 import info.pinlab.ttada.view.swing.ResourceLoader.IconType;
 import info.pinlab.pinsound.app.AudioPlayerListener;
 import info.pinlab.pinsound.app.AudioPlayerView;
@@ -16,6 +17,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -28,8 +30,10 @@ import org.slf4j.LoggerFactory;
 
 
 @SuppressWarnings("serial")
-public class AudioRecorderBar extends JPanel implements AudioRecorderView, AudioPlayerView{
+public class AudioRecorderBar extends JPanel implements AudioRecorderView, AudioPlayerView
+	{
 	public static Logger LOG = LoggerFactory.getLogger(AudioRecorderBar.class);
+	
 	
 	private final Icon recIcon;
 	private final Icon playIcon;
@@ -53,10 +57,14 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 	private AudioRecorderListener recListener = null;
 	private AudioPlayerListener playerListener = null;
 	
+	
+	
+	
 	public AudioRecorderBar(){ //??EDT?
 		this.setLayout(new GridBagLayout());
 		audioBarFont = ResourceLoader.getFont("ubuntu", fontSize);
 
+		
 		playRecBar = new AudioProgressBar();
 		playRecBar.setBarColor(playColor, Color.WHITE);
 		playRecBar.setTextColor(barTextCol);
@@ -88,6 +96,8 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 		add(playRecBar, gbc);
 
 		recBtn = new JToggleButton();
+		recBtn.setFocusable(false);
+		recBtn.setFocusTraversalKeysEnabled(false);
 		recBtn.setIcon(recIcon);
 		gbc.gridx = 1;
 		gbc.weightx = 0.0;
@@ -98,6 +108,8 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 		add(recBtn, gbc);
 		
 		playBtn = new JToggleButton();
+		playBtn.setFocusable(false);
+		playBtn.setFocusTraversalKeysEnabled(false);
 		playBtn.setIcon(playIcon);
 		gbc.gridx = 2;
 		add(playBtn, gbc);
@@ -146,6 +158,11 @@ public class AudioRecorderBar extends JPanel implements AudioRecorderView, Audio
 		});
 	}
 	
+	
+	
+	public void doToggleRecBtn(){
+		recBtn.doClick();
+	}
 	
 	@Override
 	public void setRecActionListener(AudioRecorderListener l) {

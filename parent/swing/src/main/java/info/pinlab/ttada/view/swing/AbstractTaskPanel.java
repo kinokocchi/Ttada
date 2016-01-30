@@ -1,6 +1,26 @@
 package info.pinlab.ttada.view.swing;
 
 
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.pinlab.pinsound.app.AudioPlayerView;
 import info.pinlab.ttada.core.control.AudioPlayController;
 import info.pinlab.ttada.core.control.TaskController;
@@ -13,24 +33,6 @@ import info.pinlab.ttada.core.model.display.TextInputDisplay;
 import info.pinlab.ttada.core.model.task.Task;
 import info.pinlab.ttada.core.view.PlayerTopView;
 import info.pinlab.ttada.view.swing.audio.AudioPlayerButton;
-
-import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.swing.JComponent;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 
@@ -49,8 +51,10 @@ import org.slf4j.LoggerFactory;
  *
  */
 @SuppressWarnings("serial")
-public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel {
+public abstract class AbstractTaskPanel extends JPanel 
+			implements TaskViewPanel, KeyListener{
 	public static Logger LOG = LoggerFactory.getLogger(AbstractTaskPanel.class);
+	
 	
 	private GridBagConstraints gbcTop;
 	private GridBagConstraints gbcBottom ;
@@ -249,6 +253,16 @@ public abstract class AbstractTaskPanel extends JPanel implements TaskViewPanel 
 	public void setTop(PlayerTopView topView) {
 		this.topView = topView;
 	}
+	
+	
+	//-- the following shortcuts can be overriden in extended components
+	@Override
+	public void keyReleased(KeyEvent ignore) {
+	}
+	@Override
+	public void keyTyped(KeyEvent  ignore) {
+	}
+
 }
 
 

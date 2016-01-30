@@ -1,5 +1,10 @@
 package info.pinlab.ttada.core.control;
 
-public class EntryTaskController extends AbstractTaskController {
+import info.pinlab.ttada.core.model.response.ResponseContent;
 
+public class EntryTaskController extends AbstractTaskController {
+	@Override
+	public void enrollResponse(final ResponseContent respContent){
+		super.enrollResponse(respContent);
+	}
 }

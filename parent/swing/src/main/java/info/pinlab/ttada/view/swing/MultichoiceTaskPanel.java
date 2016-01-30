@@ -1,5 +1,24 @@
 package info.pinlab.ttada.view.swing;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+import javax.swing.JButton;
+import javax.swing.JPanel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import info.pinlab.ttada.core.model.MultichoiceTask;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.display.FontProvider;
@@ -10,25 +29,10 @@ import info.pinlab.ttada.core.model.response.ResponseContentEmpty;
 import info.pinlab.ttada.core.model.response.ResponseContentText;
 import info.pinlab.ttada.core.model.task.Task;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.JButton;
-import javax.swing.JPanel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 @SuppressWarnings("serial")
-public class MultichoiceTaskPanel extends AbstractTaskPanel implements ActionListener{
+public class MultichoiceTaskPanel extends AbstractTaskPanel 
+							implements ActionListener, ShortcutConsumer{
 	public static Logger LOG = LoggerFactory.getLogger(MultichoiceTaskPanel.class);
 	
 	private final List<RespButton> buttons ;
@@ -37,17 +41,29 @@ public class MultichoiceTaskPanel extends AbstractTaskPanel implements ActionLis
 
 	private ResponseContent responseContent = null;
 	
+	
+	static final Set<Integer> shortcuts = new HashSet<Integer>();
 
 	private final JPanel respPanel ;
 	private GridBagConstraints gbc;
 	
 	static{
 		btnGray = new JButton().getBackground();
+		shortcuts.add(KeyEvent.VK_1);
+		shortcuts.add(KeyEvent.VK_2);
+		shortcuts.add(KeyEvent.VK_3);
+		shortcuts.add(KeyEvent.VK_4);
+		shortcuts.add(KeyEvent.VK_5);
+		shortcuts.add(KeyEvent.VK_6);
+		shortcuts.add(KeyEvent.VK_7);
+		shortcuts.add(KeyEvent.VK_8);
 	}
 	
 	private static class RespButton extends JButton{
 		private final Display disp;
 		private RespButton (Display disp){
+			this.setFocusable(false);
+			this.setFocusTraversalKeysEnabled(false);
 			this.disp = disp;
 		}
 	}
@@ -183,4 +199,24 @@ public class MultichoiceTaskPanel extends AbstractTaskPanel implements ActionLis
 			}
 		}
 	}
+
+
+	
+	@Override
+	public Set<Integer> getShortcutKeys() {
+		return shortcuts;
+	}
+
+
+	@Override
+	public void keyPressed(KeyEvent key){
+		int ix = key.getKeyCode() - KeyEvent.VK_1;
+//		System.out.println(" button " + ix);
+		if(ix >= 0 && ix < buttons.size()){
+			buttons.get(ix).doClick();
+		}
+	}
+
+
+	
 }

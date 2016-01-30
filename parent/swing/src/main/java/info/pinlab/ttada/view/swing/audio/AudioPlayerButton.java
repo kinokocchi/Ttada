@@ -1,14 +1,10 @@
 package info.pinlab.ttada.view.swing.audio;
 
-import info.pinlab.ttada.view.swing.PlayerTopPanel;
-import info.pinlab.ttada.view.swing.ResourceLoader;
-import info.pinlab.ttada.view.swing.ResourceLoader.IconType;
-import info.pinlab.pinsound.app.AudioPlayer;
-import info.pinlab.pinsound.app.AudioPlayerListener;
-import info.pinlab.pinsound.app.AudioPlayerView;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.swing.Icon;
 import javax.swing.JFrame;
@@ -16,16 +12,28 @@ import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
+import info.pinlab.pinsound.app.AudioPlayer;
+import info.pinlab.pinsound.app.AudioPlayerListener;
+import info.pinlab.pinsound.app.AudioPlayerView;
+import info.pinlab.ttada.view.swing.PlayerTopPanel;
+import info.pinlab.ttada.view.swing.ResourceLoader;
+import info.pinlab.ttada.view.swing.ResourceLoader.IconType;
+import info.pinlab.ttada.view.swing.ShortcutConsumer;
+
 
 @SuppressWarnings("serial")
-public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
+public class AudioPlayerButton extends JToggleButton 
+					implements AudioPlayerView, ShortcutConsumer {
 	private static Icon playIcon;
 //	private static Icon stopIcon;
 	private static Icon pauseIcon;
 	
+	static final Set<Integer> shortcuts = new HashSet<Integer>();
+	
 	static{
 		playIcon = ResourceLoader.getIcon(IconType.PLAY, 48);
 		pauseIcon = ResourceLoader.getIcon(IconType.PAUSE, 48);
+		shortcuts.add(KeyEvent.VK_SPACE);
 	}
 	
 	
@@ -79,7 +87,6 @@ public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
 
 	@Override
 	public void setPlayActionListener(AudioPlayerListener l) {
-		System.out.println("LISTENER " + l);
 		listener = l;
 	}
 
@@ -111,6 +118,26 @@ public class AudioPlayerButton extends JToggleButton implements AudioPlayerView{
 				frame.setVisible(true);
 			}
 		});
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if(e.getKeyCode()==KeyEvent.VK_SPACE){
+			this.doClick();
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+	}
+
+	@Override
+	public Set<Integer> getShortcutKeys() {
+		return shortcuts;
 	}
 
 }

@@ -5,8 +5,6 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -45,7 +43,7 @@ public class EntryTaskPanel extends AbstractTaskPanel
 		txtResp.setFont(origFont.deriveFont(24.0F));
 		txtResp.addActionListener(this);
 		
-		btn = new JButton("Send");
+		btn = new JButton("Enter");
 		gbc.gridx = 1;
 		gbc.ipady = 18;
 		gbc.fill = GridBagConstraints.NONE;

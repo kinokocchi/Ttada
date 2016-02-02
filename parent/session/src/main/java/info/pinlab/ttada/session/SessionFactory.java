@@ -406,6 +406,7 @@ public class SessionFactory {
 	public static RemoteCache initRemoteCache(Registry conf){
 		conf.put(Key.REMOTE_AVAILABLE, false); //-- make unavailable until not successful initialized 
 		remoteCache = null;
+		LOG.info("Initializing remote cache using 'conf_" + conf.id + "'" );
 		
 
 		final String cacheBuilderClazzFQCN = conf.get(Key.REMOTE_CACHE_BUILDER_FQCN);
@@ -454,6 +455,8 @@ public class SessionFactory {
 		cacheBuilder.setSerializer(remoteJsonSerializer);
 		remoteCache = cacheBuilder.build();
 
+		LOG.info("Rest service uri: " + remoteCache.getRemoteUri());
+		
 		
 		final String fullUrl = 
 				conf.get(Key.REMOTE_PROTOCOL) + "//:"  

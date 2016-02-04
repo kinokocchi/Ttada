@@ -1,6 +1,7 @@
 package info.pinlab.ttada.view.swing;
 
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Font;
@@ -33,6 +34,7 @@ import info.pinlab.ttada.core.model.ExtendedResource;
 import info.pinlab.ttada.core.model.display.AudioDisplay;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.display.FontProvider;
+import info.pinlab.ttada.core.model.display.InstructionTextDisplay;
 import info.pinlab.ttada.core.model.display.IpaDisplay;
 import info.pinlab.ttada.core.model.display.TextDisplay;
 import info.pinlab.ttada.core.model.display.TextInputDisplay;
@@ -173,9 +175,36 @@ public abstract class AbstractTaskPanel extends JPanel
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridBagLayout());
 		int gridy = 0;
+		
+		boolean hasInstruction = false;
+		for(Display disp : task.getDisplays()){
+			if(disp instanceof InstructionTextDisplay){
+				InstructionTextDisplay topText = (InstructionTextDisplay)disp;
+				JLabel label = new JLabel(topText.getText());
+//				label.setBackground(Color.yellow);
+				GridBagConstraints gbc = GbcFactory.getFillBoth();
+				
+				label.setOpaque(true);
+				label.setHorizontalAlignment(SwingConstants.LEFT);
+				label.setVerticalAlignment(SwingConstants.TOP);
+				
+				gbc.gridy = gridy++;
+				gbc.weighty = 1.0;
+				panel.add(label, gbc);
+				modelViewMap.put(disp, label);
+				hasInstruction  = true;
+			}
+		}
+		
+		
 		for(Display disp : task.getDisplays()){
 			GridBagConstraints gbc = GbcFactory.getFillBoth();
 			if(disp instanceof TextDisplay){
+				if(disp instanceof InstructionTextDisplay){
+					//-- already covered above!
+					//TODO: this may hide instructions if x > 2
+					continue;
+				}
 				JLabel label = new JLabel(((TextDisplay)disp).getText());
 				
 				if(disp instanceof IpaDisplay){
@@ -270,6 +299,19 @@ public abstract class AbstractTaskPanel extends JPanel
 			
 			
 		}
+		
+		if(hasInstruction){ //--add bottom padding as well
+			JLabel label = new JLabel(" ");
+//			label.setBackground(Color.yellow);
+			GridBagConstraints gbc = GbcFactory.getFillBoth();
+			
+			label.setOpaque(true);
+			
+			gbc.gridy = gridy++;
+			gbc.weighty = 1.0;
+			panel.add(label, gbc);
+		}
+		
 		setTopPanel(panel);
 	}
 

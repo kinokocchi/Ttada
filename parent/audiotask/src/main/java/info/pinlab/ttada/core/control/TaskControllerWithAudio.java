@@ -15,6 +15,7 @@ import info.pinlab.ttada.core.model.ExtendedResource;
 import info.pinlab.ttada.core.model.HasAudio;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.response.ResponseContent;
+import info.pinlab.ttada.core.model.response.ResponseContentEmpty;
 import info.pinlab.ttada.core.model.rule.AudioRule;
 import info.pinlab.ttada.core.model.rule.StepRule;
 import info.pinlab.ttada.core.model.task.TaskInstance;
@@ -31,6 +32,7 @@ public class TaskControllerWithAudio implements TaskController{
 	public static Logger logger = LoggerFactory.getLogger(TaskControllerWithAudio.class);
 	private SessionControllerWithAudio sessionControllerWithAudio = null;
 
+	
 	List<PlayerController> playerTokens = new ArrayList<PlayerController>();
 	Map<Object, PlayerController> modelPlayerMap = new HashMap<Object, PlayerController>();
 	private final TaskController taskController;
@@ -41,8 +43,9 @@ public class TaskControllerWithAudio implements TaskController{
 			player.setAfterPlayHook(new Runnable() {
 				@Override
 				public void run() {
-					if(respContentWaiting!=null){
-						TaskControllerWithAudio.this.enrollResponse(respContentWaiting);
+					if ( getEnrolledN()>0){
+						//-- enroll a zero: this will trigger stepping on AbstractTaskController
+						TaskControllerWithAudio.this.enrollResponse(new ResponseContentEmpty());
 					}
 				}
 			});
@@ -53,7 +56,6 @@ public class TaskControllerWithAudio implements TaskController{
 	public TaskControllerWithAudio(TaskController taskController){
 		this.taskController = taskController;
 	}
-	
 	
 	
 	@Override
@@ -144,7 +146,7 @@ public class TaskControllerWithAudio implements TaskController{
 		for(PlayerController playerToken : playerTokens){
 			playerToken.pausePlaying();
 		}
-		respContentWaiting = null;
+		resetEnrolledN();
 	}
 
 	@Override
@@ -180,17 +182,38 @@ public class TaskControllerWithAudio implements TaskController{
 		taskController.setView(view);
 	}
 	
-	ResponseContent respContentWaiting = null;
+
+	private volatile int enrolledN = 0;
+	
+	synchronized void resetEnrolledN(){
+		enrolledN =0;
+	}
+	synchronized void incrEnrolledN(){
+		enrolledN++;
+	}
+	synchronized int getEnrolledN(){
+		return enrolledN;
+	}
+	
 	
 	@Override
 	public void enrollResponse(ResponseContent respContent){
+		//-- in order to avoid playing several files at the same time:
 		for(PlayerController playerToken : playerTokens){
 			if(playerToken.isPlaying()){
-				respContentWaiting = respContent;
+				//-- silently enroll
+				incrEnrolledN();
+				taskController.getSessionController().enrollResponse(respContent);
+				//-- don't step or anything
 				return;
 			}
 		}
 		taskController.enrollResponse(respContent);
 	}
 
+	@Override
+	public SessionController getSessionController() {
+		return taskController.getSessionController();
+	}
 }
+

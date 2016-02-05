@@ -51,16 +51,18 @@ public class EntryTaskPanel extends AbstractTaskPanel
 		respPanel.add(btn, gbc);
 		btn.addActionListener(this);
 		
-		btn.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e){
-				final String usrTxt = EntryTaskPanel.this.txtResp.getText();
-				long rt = e.getWhen() - EntryTaskPanel.this.displayT;
-				if (EntryTaskPanel.this.taskController != null){
-					EntryTaskPanel.this.taskController.enrollResponse(new ResponseContentText(e.getWhen(), rt, usrTxt));
-				}
-			}
-		});
+		btn.addActionListener(this);
+//				new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e){
+//				final String usrTxt = EntryTaskPanel.this.txtResp.getText();
+//				long rt = e.getWhen() - EntryTaskPanel.this.displayT;
+//				if (EntryTaskPanel.this.taskController != null){
+//					EntryTaskPanel.this.taskController.enrollResponse(new ResponseContentText(e.getWhen(), rt, usrTxt));
+//				}
+//			}
+//		});
+		
 		super.setBottomPanel(respPanel);
 		
 		new Thread(new Runnable() {
@@ -103,6 +105,7 @@ public class EntryTaskPanel extends AbstractTaskPanel
 		long t1 = e.getWhen();
 		responseContent = new ResponseContentText(t1, t1-displayT, txtResp.getText(), txtResp.getText());
 		if(super.taskController!=null){
+//			System.out.println("   ENROLL!! " + super.taskController.getClass());
 			super.taskController.enrollResponse(responseContent);
 		}
 	}

@@ -124,6 +124,9 @@ public abstract class AbstractTaskController implements TaskController{
 		this.sessionController = sessionController;
 	}
 
+	public SessionController getSessionController(){
+		return this.sessionController;
+	}
 	
 	
 	@Override
@@ -173,6 +176,7 @@ public abstract class AbstractTaskController implements TaskController{
 	
 	@Override
 	public void enrollResponse(final ResponseContent respContent){
+
 		if(currentTask.getStepRule().getMaxAttempt() >= 0){  //--) there is a constraint
 			if(attemptN >=  currentTask.getStepRule().getMaxAttempt()){    //-- too many attempts
 				if(view!=null)	view.setEnabled(false);
@@ -185,6 +189,7 @@ public abstract class AbstractTaskController implements TaskController{
 			if(view!=null)	view.setEnabled(true);
 		}
 		attemptN++;
+		System.out.println(">>> Attempt : "+ attemptN);
 		if(sessionController!=null){
 			sessionController.enrollResponse(respContent);	
 			//-- STEP or not? -> step only if enroll-only request, 

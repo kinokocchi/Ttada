@@ -15,6 +15,8 @@ public interface TaskController extends StepReqListener{
 	public void setSessionController(SessionController sessionController);
 	public void setEnrollController(EnrollController enrollController);
 
+	public SessionController getSessionController();
+	
 	public int getAttemptN();
 	
 	public StepRule getStepRule();

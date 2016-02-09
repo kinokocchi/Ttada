@@ -15,7 +15,6 @@ import info.pinlab.ttada.core.model.ExtendedResource;
 import info.pinlab.ttada.core.model.HasAudio;
 import info.pinlab.ttada.core.model.display.Display;
 import info.pinlab.ttada.core.model.response.ResponseContent;
-import info.pinlab.ttada.core.model.response.ResponseContentEmpty;
 import info.pinlab.ttada.core.model.rule.AudioRule;
 import info.pinlab.ttada.core.model.rule.StepRule;
 import info.pinlab.ttada.core.model.task.TaskInstance;
@@ -45,7 +44,7 @@ public class TaskControllerWithAudio implements TaskController{
 				public void run() {
 					if ( getEnrolledN()>0){
 						//-- enroll a zero: this will trigger stepping on AbstractTaskController
-						TaskControllerWithAudio.this.enrollResponse(new ResponseContentEmpty());
+//						TaskControllerWithAudio.this.enrollResponse(new ResponseContentEmpty());
 					}
 				}
 			});

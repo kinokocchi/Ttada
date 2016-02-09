@@ -32,9 +32,9 @@ public abstract class AbstractTaskController implements TaskController{
 	
 	private volatile boolean isNextByUsrRqst = false; //-- as opposed to enroll request
 	
-	synchronized boolean isNextReq(){
-		return isNextReq();
-	}
+//	synchronized boolean isNextReq(){
+//		return isNextReq();
+//	}
 	
 	@Override
 	public void reqNext(){

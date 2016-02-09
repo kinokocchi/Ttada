@@ -185,11 +185,12 @@ public abstract class AbstractTaskPanel extends JPanel
 				GridBagConstraints gbc = GbcFactory.getFillBoth();
 				
 				label.setOpaque(true);
-				label.setHorizontalAlignment(SwingConstants.LEFT);
+				label.setHorizontalAlignment(SwingConstants.CENTER);
 				label.setVerticalAlignment(SwingConstants.TOP);
 				
 				gbc.gridy = gridy++;
 				gbc.weighty = 1.0;
+//				gbc.insets = new Insets(0, 25, 0, 5);
 				panel.add(label, gbc);
 				modelViewMap.put(disp, label);
 				hasInstruction  = true;
